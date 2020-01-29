@@ -1,7 +1,19 @@
 //data
-window.urls = {}
+window.urls = {};
+blocked_cookies = [];
+blocked_domains = [];
+blocked_all = false;
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	window.urls[request.url] = request.html
+	if (request.html)
+		window.urls[request.url] = request.html
+	else
+	{
+		blocked_cookies = request.blocked_cookies;
+		blocked_domains = request.blocked_domains;
+		blocked_all = request.blocked_all;
+	}
+	
 })
 
 chrome.browserAction.onClicked.addListener(function(tab) {
@@ -13,31 +25,27 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 
 //cookies
-chrome.cookies.onChanged.addListener(function(info) {;
-			if (window.blocked_all) {
-				console.log('bloinkinall');
-				chrome.cookies.getAll({}, function(cookies) {
-					for (var i in cookies) {
-						removeCookie(cookies[i]);
-					}
-				});
-			} else {
-				if (window.blocked_cookies.includes(info.cookie) || window.blocked_domains.includes(info.cookie.domain)) {
-					console.log('bloinkinsome');
-					removeCookie(cookie)
-				}
+chrome.cookies.onChanged.addListener(function(info) {
+	if (blocked_all)
+		removeCookie(info.cookie);
 
-			}
-		});
+	if (blocked_cookies.includes(info.cookie)) {
+		removeCookie(cookie)
+	}
+	if (blocked_domains.includes(info.cookie.domain)) {;
+		removeCookie(cookie)
+	}
+
+
+});
 
 
 
-		function removeCookie(cookie) {
-			var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
-				cookie.path;
-			chrome.cookies.remove({
-				"url": url,
-				"name": cookie.name
-			});
-			cache.remove(cookie);
-		}
+function removeCookie(cookie) {
+	var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
+		cookie.path;
+	chrome.cookies.remove({
+		"url": url,
+		"name": cookie.name
+	});
+}
