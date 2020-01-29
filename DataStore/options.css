@@ -26,3 +26,47 @@
 	  text-align: right;
 	}
 }
+
+#data_selection {
+	border: 5px ridge #1C6EA4;
+	border-radius: 30px;
+	display: inline-block;
+	padding: 10px;
+	margin-top: 20px;
+}
+
+#tracked_data {
+	border: 5px ridge #1C6EA4;
+	border-radius: 30px;
+	display: inline-block;
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.expand_button_meta {
+	margin: auto ;
+	margin-left:10px;
+	margin-bottom: 5px;
+
+	float:right; display:inline; 
+
+
+}
+
+.selection_expanded {
+	overflow-x:auto;
+}
+
+.datapoint_table {
+	margin-top: 0px;
+	border: 1px solid black;
+}
+
+.table_row {
+	border: 1px solid black;
+}
+
+#datamanager_buttons {
+	margin-top: 20px
+	
+}

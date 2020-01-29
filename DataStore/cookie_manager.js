@@ -9,7 +9,7 @@
 window.blocked_cookies = []
 window.blocked_domains = []
 window.blocked_all = false;
-
+const background = chrome.extension.getBackgroundPage();
 expanded_domains = []
 
 function storeSettings() {
@@ -29,31 +29,39 @@ function storeSettings() {
 
   chrome.storage.sync.set(json, function() {
     console.log('Saved', key, prefs);
+
+    chrome.runtime.sendMessage({
+      blocked_cookies: window.blocked_cookies,
+      blocked_domains: window.blocked_domains,
+      blocked_all: window.blocked_all
+    });
   });
 }
 
 function retreiveSettings(callback) {
 
   chrome.storage.sync.get('userSettings', function(result) {
-    result = result['userSettings'];
-    result = JSON.parse(result);
+    if (result['userSettings']) {
+      result = result['userSettings'];
+      result = JSON.parse(result);
 
-    //setblockedall
-    window.blocked_all = result['blocked_all']
+      //setblockedall
+      window.blocked_all = result['blocked_all']
 
-    if (window.blocked_all) {
-      document.getElementById('block_all_check').click()
-    } else {
-      document.getElementById('block_some_check').click()
+      if (window.blocked_all) {
+        document.getElementById('block_all_check').click()
+      } else {
+        document.getElementById('block_some_check').click()
+      }
+
+      //set blockedcookies
+      window.blocked_cookies.push(result['blocked_cookies']);
+      window.blocked_cookies.filter(onlyUnique);
+
+      //set blocked domains
+      window.blocked_domains.push(result['blocked_domains']);
+      window.blocked_domains.filter(onlyUnique);
     }
-
-    //set blockedcookies
-    window.blocked_cookies.push(result['blocked_cookies']);
-    window.blocked_cookies.filter(onlyUnique);
-
-    //set blocked domains
-    window.blocked_domains.push(result['blocked_domains']);
-    window.blocked_domains.filter(onlyUnique);
 
   });
 
@@ -218,18 +226,16 @@ function removeCookiesForDomain(domain) {
 }
 
 function removeCookiesBlocked() {
-   cache.getDomains().forEach(function(domain)
-   {
-    cache.getCookies(domain).forEach(function(cookie){
-      if (window.blocked_cookies.includes(cookie))
-      {
+  cache.getDomains().forEach(function(domain) {
+    cache.getCookies(domain).forEach(function(cookie) {
+      if (window.blocked_cookies.includes(cookie)) {
         alert('foundthebasetsdf');
         removeCookie(cookie);
       }
     });
-   });
+  });
 
-  window.blocked_domains.forEach(function(domain){
+  window.blocked_domains.forEach(function(domain) {
     removeCookiesForDomain(domain)
   });
 }
@@ -259,7 +265,7 @@ function reloadCookieTable() {
   reload_scheduled = false;
 
   var filter = select("#filter").value;
-  
+
   removeCookiesBlocked();
   var domains = cache.getDomains(filter);
 
@@ -269,7 +275,7 @@ function reloadCookieTable() {
 
   resetTable();
   var table = select("#cookies");
-  
+
 
   domains.forEach(function(domain) {
     var cookies = cache.getCookies(domain);
@@ -282,10 +288,14 @@ function reloadCookieTable() {
 
     var block_button = document.createElement("button");
     block_button.innerText = "block";
+    checkbox = selectElement('block_some_check');
     block_button.onclick = (function() {
+        if (!checkbox.checked)
+          checkbox.click();
       removeCookiesForDomain(domain);
       window.blocked_domains.push(domain);
       window.blocked_domains.filter(onlyUnique);
+
     });
     var cell = row.insertCell(-1);
     cell.appendChild(block_button);
@@ -341,7 +351,10 @@ function expandSection(row) {
 
       var subbutton = document.createElement("button");
       subbutton.innerText = "block";
+      checkbox = selectElement('block_some_check');
       subbutton.onclick = (function() {
+        if (!checkbox.checked)
+          checkbox.click();
         window.blocked_cookies.push(cookie);
         window.blocked_cookies.filter(onlyUnique);
         removeCookie(cookie);
@@ -435,7 +448,9 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
         continuousDeleteAll();
         window.blocked_all = true;
       } else {
+        stopListening();
         startListening();
+        window.blocked_all = false;
       }
 
       checkbox_some.addEventListener('change', function() {
@@ -446,6 +461,7 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
           continuousDeleteList();
           window.blocked_all = false;
         } else {
+          stopListening();
           startListening();
         }
       });
@@ -457,6 +473,10 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
   if (checkbox_some) {
 
   }
+}
+
+function selectElement(id) {
+  return document.getElementById(id);
 }
 
 //THIS IS ALL THEY ARE DOING TO GET THE COOKIES
