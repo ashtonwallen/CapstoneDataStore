@@ -5,24 +5,19 @@
 
 
 // MIGHT NEED TO PLACE SOME IN BACKGROUND SCRIPT SO IT KEEP SHIT OUT
-
-window.blocked_cookies = []
-window.blocked_domains = []
-window.blocked_all = false;
 const background = chrome.extension.getBackgroundPage();
 expanded_domains = []
 
 function storeSettings() {
-
   var key = 'userSettings'
   var prefs = "";
   var json = {};
 
   //TODO da way this be saving gets foinked up
   prefs += JSON.stringify({
-    'blocked_cookies': window.blocked_cookies,
-    'blocked_domains': window.blocked_domains,
-    'blocked_all': window.blocked_all
+    'blocked_cookies': background.blocked_cookies,
+    'blocked_domains': background.blocked_domains,
+    'blocked_all': background.blocked_all
   });
 
   json[key] = prefs;
@@ -30,14 +25,15 @@ function storeSettings() {
   chrome.storage.sync.set(json, function() {
     console.log('Saved', key, prefs);
 
-    chrome.runtime.sendMessage({
-      blocked_cookies: window.blocked_cookies,
-      blocked_domains: window.blocked_domains,
-      blocked_all: window.blocked_all
-    });
+    background.blocked_cookies = blocked_cookies;
+    background.blocked_domains = blocked_domains;
+    background.blocked_all = blocked_all;
   });
+
+  location.reload();
 }
 
+//might want to move to background
 function retreiveSettings(callback) {
 
   chrome.storage.sync.get('userSettings', function(result) {
@@ -46,21 +42,21 @@ function retreiveSettings(callback) {
       result = JSON.parse(result);
 
       //setblockedall
-      window.blocked_all = result['blocked_all']
+      background.blocked_all = result['blocked_all']
 
-      if (window.blocked_all) {
+      if (background.blocked_all) {
         document.getElementById('block_all_check').click()
       } else {
         document.getElementById('block_some_check').click()
       }
 
       //set blockedcookies
-      window.blocked_cookies.push(result['blocked_cookies']);
-      window.blocked_cookies.filter(onlyUnique);
+      background.blocked_cookies.push(result['blocked_cookies']);
+      background.blocked_cookies.filter(onlyUnique);
 
       //set blocked domains
-      window.blocked_domains.push(result['blocked_domains']);
-      window.blocked_domains.filter(onlyUnique);
+      background.blocked_domains.push(result['blocked_domains']);
+      background.blocked_domains.filter(onlyUnique);
     }
 
   });
@@ -228,14 +224,13 @@ function removeCookiesForDomain(domain) {
 function removeCookiesBlocked() {
   cache.getDomains().forEach(function(domain) {
     cache.getCookies(domain).forEach(function(cookie) {
-      if (window.blocked_cookies.includes(cookie)) {
-        alert('foundthebasetsdf');
+      if (background.blocked_cookies.includes(cookie)) {
         removeCookie(cookie);
       }
     });
   });
 
-  window.blocked_domains.forEach(function(domain) {
+  background.blocked_domains.forEach(function(domain) {
     removeCookiesForDomain(domain)
   });
 }
@@ -290,11 +285,11 @@ function reloadCookieTable() {
     block_button.innerText = "block";
     checkbox = selectElement('block_some_check');
     block_button.onclick = (function() {
-        if (!checkbox.checked)
-          checkbox.click();
+      if (!checkbox.checked)
+        checkbox.click();
       removeCookiesForDomain(domain);
-      window.blocked_domains.push(domain);
-      window.blocked_domains.filter(onlyUnique);
+      background.blocked_domains.push(domain);
+      background.blocked_domains.filter(onlyUnique);
 
     });
     var cell = row.insertCell(-1);
@@ -355,8 +350,8 @@ function expandSection(row) {
       subbutton.onclick = (function() {
         if (!checkbox.checked)
           checkbox.click();
-        window.blocked_cookies.push(cookie);
-        window.blocked_cookies.filter(onlyUnique);
+        background.blocked_cookies.push(cookie);
+        background.blocked_cookies.filter(onlyUnique);
         removeCookie(cookie);
         reloadCookieTable();
       });
@@ -423,7 +418,7 @@ function listener(info) {
 
 //still need to remove specific domains
 function block_specific_listener(info) {
-  window.blocked_cookies.forEach(function(cookie) {
+  blocked_cookies.forEach(function(cookie) {
     if (cookieMatch(cookie, info.cookie)) {
       removeCookie(info.cookie)
       return;
@@ -446,11 +441,11 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
         stopListening();
         removeAll();
         continuousDeleteAll();
-        window.blocked_all = true;
+        background.blocked_all = true;
       } else {
         stopListening();
         startListening();
-        window.blocked_all = false;
+        background.blocked_all = false;
       }
 
       checkbox_some.addEventListener('change', function() {
@@ -459,27 +454,20 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
             checkbox_all.click();
           stopListening();
           continuousDeleteList();
-          window.blocked_all = false;
+          background.blocked_all = false;
         } else {
           stopListening();
           startListening();
         }
       });
     });
-
-
-  } // combine these somehow
-
-  if (checkbox_some) {
-
-  }
+  } 
 }
 
 function selectElement(id) {
   return document.getElementById(id);
 }
 
-//THIS IS ALL THEY ARE DOING TO GET THE COOKIES
 function onload() {
   retreiveSettings();
   focusFilter();

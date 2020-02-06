@@ -32,7 +32,7 @@
 	border-radius: 30px;
 	display: inline-block;
 	padding: 10px;
-	margin-top: 20px;
+	margin-top: 10px;
 }
 
 #tracked_data {
@@ -43,14 +43,19 @@
 	margin-top: 10px;
 }
 
+#data_div_all {
+	position: relative;
+	text-align: center;
+	display: inline-block;
+}
+
 .expand_button_meta {
 	margin: auto ;
 	margin-left:10px;
 	margin-bottom: 5px;
 
-	float:right; display:inline; 
-
-
+	float:right; 
+	display:inline; 
 }
 
 .selection_expanded {
@@ -67,6 +72,42 @@
 }
 
 #datamanager_buttons {
-	margin-top: 20px
+	margin-top: 20px;
+	text-align: center;
+}
+
+
+
+.options_checkbox {
 	
+}
+
+h2 {
+	margin-bottom: 5px;
+}
+
+table, th, td {
+  padding: 5px;
+  text-align: left;
+  border: 1px solid black;
+}
+
+
+#everything {
+	/*background-color: #33ccff;*/
+	text-align: center;
+}
+
+#expanded_data {
+    top: 0; left: 0; bottom: 0; right: 0;
+    box-shadow: inset 2px 2px 4px 5px rgba(0,0,0,0.3);
+    text-align: center;
+    display: inline-block;
+}
+
+
+html {
+	  font-family: Verdana,sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
 }

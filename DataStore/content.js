@@ -9,6 +9,7 @@
 //const matches = document.documentElement.innerHTML || []
 
 //THIS IS WHERE I SENT DATA FROM PAGE TO BACKGROUND SCRIPT
+
 chrome.runtime.sendMessage({
   url: window.location.href,
   html: document.documentElement.innerHTML || []
