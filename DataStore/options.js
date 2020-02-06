@@ -1,35 +1,87 @@
-trackable_datapoints = {
-  'urls': false,
-  'html_data': false,
-  'html_metadata': false,
-  'location_data': false
+const background = chrome.extension.getBackgroundPage();
+
+function saveOptions() {
+  var key = 'userSettingsData'
+  var prefs = "";
+  var json = {};
+  var values;
+
+  prefs = JSON.stringify({
+    'trackable_datapoints': background.trackable_datapoints,
+    'track_none': background.track_none
+  });
+
+  json[key] = prefs;
+
+  chrome.storage.sync.set(json, function() {
+    location.reload();
+  });
+  console.log("Saved")
 }
 
+function retreiveSettings(callback) {
+  chrome.storage.sync.get('userSettingsData', function(result) {
+    if (Object.keys(result['userSettingsData']).length > 0) {
+      result = result['userSettingsData'];
+      result = JSON.parse(result);
+
+      background.trackable_datapoints = result['trackable_datapoints'];
+      background.track_none = result['track_none'];
+      console.log(background.trackable_datapoints)
+
+      if (background.track_none) {
+        toggle = select('track_any_check')
+        setBox(toggle);
+        toggleAll(background.track_none)
+      } else {
+        Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
+          if (background.trackable_datapoints[datapoint]) {
+            console.log('hereshouldbesetting')
+            toggle = select(datapoint + '_id');
+            setBox(toggle)
+          }
+
+        })
+      }
+    }
+  });
+
+}
+
+function setBox(elem) {
+  elem.checked = true;
+}
+
+function resetSettings() {
+  background.track_none = false;
+  clearStoredData();
+  resetTrackers();
+  saveOptions();
+}
+
+function resetTrackers() {
+  Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
+    background.trackable_datapoints[datapoint] = false;
+    select(datapoint + '_id').checked = false;
+  });
+}
+
+
 document.addEventListener('DOMContentLoaded', function() {
-  const background = chrome.extension.getBackgroundPage()
+  background.setDatapoints();
   const tracked_data_element = select('tracked_data');
   const div_url = select('data_selection')
 
-  Object.keys(trackable_datapoints).forEach(function(datapoint) {
-    const datapoint_element = document.createElement('p'); //might need to set an id
-    const datapoint_toggle = document.createElement('input');
+  select('store_tracked').onclick = downloadFile;
 
-    datapoint_toggle.setAttribute('type', 'checkbox');
-    datapoint_toggle.setAttribute('id', datapoint + '_id');
-    datapoint_element.textContent = datapoint;
-
-    datapoint_element.appendChild(datapoint_toggle);
-    div_url.appendChild(datapoint_element);
-
-    //set metadata view
-    tracked_data_element.appendChild(setupMetaView(datapoint, background));
-
-
+  var datapoint_all = select('track_any_check');
+  datapoint_all.onclick = (function() {
+    toggleAll(datapoint_all.checked);
   });
 
+  setUpTrackers(div_url, tracked_data_element);
 
-
-  switchToCookie = document.getElementById('cookie_switch_button')
+  switchToCookie = select('cookie_switch_button');
 
   switchToCookie.addEventListener('click', function() {
     chrome.tabs.query({
@@ -42,41 +94,80 @@ document.addEventListener('DOMContentLoaded', function() {
     })
   });
 
+
+  select('save_datamanager').onclick = saveOptions;
+  select('reset_datamanager').onclick = resetSettings;
+
 }, false)
 
+function setUpTrackers(div_url, tracked_data) {
+  Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
+    var datapoint_element = document.createElement('p');
+    var datapoint_toggle = document.createElement('input');
+    datapoint_toggle.setAttribute('type', 'checkbox');
+    datapoint_toggle.setAttribute('id', datapoint + '_id');
+    datapoint_toggle.setAttribute('class', 'options_checkbox');
+
+    datapoint_toggle.onclick = (function() {
+      background.trackable_datapoints[datapoint] = !background.trackable_datapoints[datapoint];
+      console.log(background.trackable_datapoints)
+    });
+
+    datapoint_element.textContent = datapoint;
+
+    datapoint_element.appendChild(datapoint_toggle);
+    div_url.appendChild(datapoint_element);
 
 
-function setupMetaView(datapoint, background) {
-  const data_info = document.createElement('p');
-  data_info.setAttribute('id', datapoint + "_metaview")
+    tracked_data.appendChild(setupMetaView(datapoint));
+
+ });
   const view_button = document.createElement('button');
-  view_button.setAttribute('id', datapoint + "_button");
-  view_button.setAttribute('class', 'expand_button_meta');
+  view_button.setAttribute('id', "dataexpand_button");
   view_button.onclick = (function() {
-    expandSelection(datapoint, background, data_info);
+    expandData();
   });
   view_button.innerHTML = 'expand';
 
-  switch (datapoint) {
-    case 'urls':
-      data_info.textContent = datapoint + ": " + Object.keys(background.urls).length + " records"
-      data_info.appendChild(view_button);
-      break;
-    case 'html_data':
-      data_info.textContent = datapoint + ": " + Object.keys(background.urls).length + " records"
-      data_info.appendChild(view_button);
-      break;
-    default:
+  tracked_data.appendChild(view_button);
+
+    retreiveSettings();
+ 
+}
+
+function toggleAll(checked) {
+  if (checked) {
+    background.track_none = true;
+    var elms = document.querySelectorAll('.options_checkbox');
+    elms.forEach(elem => elem.disabled = true);
+    resetTrackers();
+    clearStoredData();
+
+  } else {
+    background.track_none = false;
+    var elms = document.querySelectorAll('.options_checkbox');
+    elms.forEach(elem => elem.disabled = false)
+
   }
+}
 
+function clearStoredData() {
+  background.collected_data = [];
+}
 
+function setupMetaView(datapoint) {
+  const data_info = document.createElement('p');
+  data_info.setAttribute('id', datapoint + "_metaview")
+
+  numRecords = background.collected_data.length;
+  data_info.textContent = datapoint + ": " + numRecords + " records"
 
   return data_info;
 }
 
-//need a way to know if it is already expanded
-function expandSelection(datapoint, background, parent) {
-  var table_id = datapoint + '_table';
+function expandData() {
+  var parent = select('expanded_data');
+  var table_id = 'dataview_table';
   var table = select(table_id);
 
   if (table) {
@@ -85,69 +176,56 @@ function expandSelection(datapoint, background, parent) {
   }
 
   table = document.createElement("TABLE");
-  table.setAttribute('id', datapoint + '_table');
-  table.setAttribute('class', 'datapoint_table');
+  table.setAttribute('id', table_id);
   var header = table.createTHead();
 
-  //figure out better way than repeating switches
-  switch (datapoint) {
-    case 'urls':
-      if (Object.keys(background.urls).length > 0) {
-        Object.keys(background.urls).forEach(function(url) {
-            row = table.insertRow(0)
-            var row = table.insertRow(-1);
-            row.setAttribute('class', 'table_row');
-            // row.onclick = (function(){
-            //           chrome.tabs.create({
-            //     url: chrome.runtime.getURL("view_html_content.html"),
-            //   }, function(win) {
-            // win.getElementById('display_view')
-            // win.innerHTML = background.urls[url];
+  background.collected_data.forEach(function(data) {
+    row = table.insertRow(0)
+    var row = table.insertRow(-1);
+    row.setAttribute('class', 'table_row');
+    row.insertCell(-1).innerText = data.url;
+    row.onclick = (function() {
+      createExternalView(data);
+    });
+    parent.appendChild(table);
 
-            //TODO launch html data some way
-            //   });
-            // })
-            row.insertCell(-1).innerText = url;
-            row.onclick = (function(){
-              ExternalViewData(background.urls[url]);
-               chrome.tabs.create({
-               url: chrome.runtime.getURL("view_html_content.html"),
-            });
-        });
-        parent.appendChild(table);
-        });
-      }
-
-
-
-      break;
-    case 'html_data':
-      break;
-    default:
-  }
-
-
+});
 }
 
-function ExternalViewData(data, background){    
 
+function createExternalView(data) {
+  background.temp_data = data;
+  chrome.tabs.create({
+    url: chrome.runtime.getURL("view_content.html"),
+  });
 }
 
 function select(id) {
   return document.getElementById(id);
 }
 
-//  const div_url = document.createElement('div')
-//  div_url.setAttribute("id","url_info")
-//  const div_html = document.createElement('div')
-//  div_html.setAttribute("id","html_info")
+function downloadFile() {//can do zip file if needed
+  fileName = "userdata/userData.txt";
+  content = getUserContent();
+  var blob = new Blob([content], {
+    type: "text/plain;charset=UTF-8"
+  });
+  url = window.URL.createObjectURL(blob);
 
-// div_url.innerHTML = '<b><p>' + url + '<p></b>'
-//  div_html.textContent = '<pre>' + background.urls[url] + '</pre>'
+  chrome.downloads.download({
+    url: url,
+    filename: fileName
+  })
+}
 
-//  display collected data
-// document.body.appendChild(div_url)
-// document.body.appendChild(div_html) 
+// TODO UPDATE FUNCTION
+function getUserContent() {
+  // retVal = ''
 
+  // background.collected_data.forEach(function(data) {
+  //   retVal += data.url + '\n';
+  //   retVal += background.collected_data['urls'][url] + '\n\n';
+  // });
 
-// Object.keys(background.urls).forEach(function (url) {})
+  // return retVal;
+}

@@ -1,45 +1,62 @@
 //data
-window.urls = {};
-blocked_cookies = [];
-blocked_domains = [];
-blocked_all = false;
+window.blocked_all = false;
+window.blocked_cookies = [];
+window.blocked_domains = [];
+window.trackable_datapoints = {};
+window.track_none = false;
+window.collected_data = []
+window.temp_data = "";
+var last_position = "";
 
+//get from content script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	if (request.html)
-		window.urls[request.url] = request.html
-	else
-	{
-		blocked_cookies = request.blocked_cookies;
-		blocked_domains = request.blocked_domains;
-		blocked_all = request.blocked_all;
+	console.log('gotmessage')
+	if (request.url) {
+		getLocation();
+		window.collected_data.push({
+			'id': generateId().toString(16),
+			'url': request.url,
+			'datetime': getDateTime(),
+			'location': last_position,
+			'html_data': request.html
+		});
+		console.log(window.collected_data)
 	}
-	
+	// if (request.reset_all) {
+	// 	//might want to set this up once we clean up interactions
+	// }
 })
-
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.create({
-		url: 'options.html'
-	})
-})
-
-
 
 //cookies
 chrome.cookies.onChanged.addListener(function(info) {
 	if (blocked_all)
 		removeCookie(info.cookie);
-
+	return;
 	if (blocked_cookies.includes(info.cookie)) {
-		removeCookie(cookie)
+		removeCookie(info.cookie)
 	}
-	if (blocked_domains.includes(info.cookie.domain)) {;
-		removeCookie(cookie)
+	if (blocked_domains.includes(info.cookie.domain)) {
+		removeCookie(info.cookie)
 	}
-
-
 });
 
+function getLocation() {
+	var id;
+	if (window.trackable_datapoints['location_data']) {
+		if (navigator.geolocation)
+			navigator.geolocation.getCurrentPosition(savePosition);
+	} else {
+		last_position = "not provided"
+	}
+}
 
+function savePosition(position) {
+	last_position = position.coords.latitude + ', ' + position.coords.longitude;
+}
+
+function getDateTime() {
+	return new Date().toLocaleString().replace(",", "").replace(/:.. /, " ");
+}
 
 function removeCookie(cookie) {
 	var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
@@ -48,4 +65,23 @@ function removeCookie(cookie) {
 		"url": url,
 		"name": cookie.name
 	});
+}
+
+function setDatapoints() {
+	window.trackable_datapoints = {
+		'urls': false,
+		'html_data': false,
+		'location_data': false
+	}
+}
+
+// https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
+function generateId() {
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8));
+    });
+    return uuid;
 }

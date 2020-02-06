@@ -1,0 +1,16 @@
+todo:
+refactor cookie_manager.js among others
+set up additional datapoints: location, metadata, webrequests, 
+offer slider to automatically adjust privacy settings (least, med, most)
+	- use chrome.permissions, chrome.privacy
+MONGODB AND SIMPLE SITE FOR DATA EXCHANGE
+CAN DOWNLOAD ZIP FILE : https://stackoverflow.com/questions/20988041/how-to-set-the-file-download-location-for-chrome-extension-using-javascript
+look into toasts to confirm user interactions
+
+
+2/3/20: working on popup UI and trackere
+	- CONSIDER USING MONGO DB TO STORE USER DATA WHEN THEY WANT TO POST IT 
+	- need savedata to go to the right directory not just downloads folder
+
+2/5/20: Working to refactor and fix an issue with saved settings
+	- NEED TO FIX METAVIEW IN OPTIONS.JS AS WE CHANGED THE STRUCTURE OF DATA COLLECTION OBJ
