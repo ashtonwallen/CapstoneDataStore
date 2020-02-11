@@ -1,2 +1,28 @@
 .subtable {
+
+}
+
+html {
+	font-family: Verdana,sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+}
+#block_some_text {
+	margin-left: 15px;
+}
+
+#cookies {
+	display: inline-block;
+}
+
+#cookie_manager {
+	position: relative;
+	text-align: center;
+	/*display: block;*/
+	margin-top: 20px;
+  	align-items: center;
+}
+
+.nav-item {
+	cursor: pointer;
 }

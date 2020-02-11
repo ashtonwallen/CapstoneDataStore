@@ -2,27 +2,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="options.css">
-  <meta charset="UTF-8">
-  <title>Document</title>
+	<link rel="stylesheet" href="options.css">
+	 <link rel="stylesheet" href="sliders.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<meta charset="UTF-8">
+	<title>Document</title>
 </head>
 <body>
-  <!-- <button>Count Bears</button> -->
-  <script src="options.js" charset="utf-8"></script>
-  <div id='navigation'>
-  <button id="cookie_switch_button">Cookie Manager</button>
-	</div>
-	<div id="everything">
-<div id="data_div">
-  <div id='data_selection'><h2>Trackable Datapoints</h2><hr><span><b>Track None</b><input type='checkbox' id='track_any_check'></span></div>
-  <div id='tracked_data'><h2>Tracked Data</h2><hr></div>
-</div>
-  <div id='datamanager_buttons'>
-  <button id="save_datamanager">Save</button>
-   <button id="reset_datamanager">Reset</button>
-     <button id="store_tracked">Download</button>
- </div>
-  <div id="expanded_data">
-  </div>
-</body>
-</html>
+	<!-- <button>Count Bears</button> -->
+	<script src="options.js" charset="utf-8"></script>
+	 <script src="navbar.js"></script>
+	<div id='navigation'>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand">DataStore</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" id="data_switch_button" disabled>Data Settings</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="cookie_switch_button">Cookie Manager</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="demographics_button">Demographic Information</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="guides_button">Guides</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div id="everything">
+			<div id="data_div_all">
+				<div id='data_selection'>
+					<h2>Trackable Datapoints</h2>
+					<hr>
+
+					<b>Track None</b>
+					<label class="switch">
+						<input type='checkbox' id='track_any_check'>
+						<span class="slider all round"></span>
+					</label>
+					<hr>
+				</div>
+				<div id='tracked_data'><h2>Tracked Data</h2><hr></div>
+			</div>
+			<div id='datamanager_buttons'>
+				<button id="save_datamanager" class="btn btn-success">Save Settings</button>
+				<button id="reset_datamanager" class="btn btn-danger">Reset</button>
+				<button id="store_tracked" class="btn btn-primary">Download Data</button>
+			</div>
+			<div id="expanded_data">
+			</div>
+		</body>
+		</html>

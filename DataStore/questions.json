@@ -1,0 +1,20 @@
+{
+  "questions": 
+    {
+    "q1": "Email Address",
+    "q2": "Date Of Birth",
+    "q3": "Gender Identity",
+    "q4": "Ethnicity",
+    "q5": "Employment Status",
+    "q6": "Occupation",
+    "q7": "Nationality",
+    "q8": "State/Province",
+    "q9": "Marital Status",
+    "q10": "Household Income",
+    "q11": "Number of Children",
+    "q12": "Place of Birth",
+    "q13": "Political Affiliation",
+    "q14": "Religious Affiliation",
+    "q15": "Languages Spoken"
+  }
+}

@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
-
-// MIGHT NEED TO PLACE SOME IN BACKGROUND SCRIPT SO IT KEEP SHIT OUT
 const background = chrome.extension.getBackgroundPage();
 expanded_domains = []
 
@@ -22,12 +19,8 @@ function storeSettings() {
 
   json[key] = prefs;
 
-  chrome.storage.sync.set(json, function() {
+  chrome.storage.local.set(json, function() {
     console.log('Saved', key, prefs);
-
-    background.blocked_cookies = blocked_cookies;
-    background.blocked_domains = blocked_domains;
-    background.blocked_all = blocked_all;
   });
 
   location.reload();
@@ -36,7 +29,7 @@ function storeSettings() {
 //might want to move to background
 function retreiveSettings(callback) {
 
-  chrome.storage.sync.get('userSettings', function(result) {
+  chrome.storage.local.get('userSettings', function(result) {
     if (result['userSettings']) {
       result = result['userSettings'];
       result = JSON.parse(result);
@@ -45,9 +38,9 @@ function retreiveSettings(callback) {
       background.blocked_all = result['blocked_all']
 
       if (background.blocked_all) {
-        document.getElementById('block_all_check').click()
+        select('#block_all_check').click()
       } else {
-        document.getElementById('block_some_check').click()
+        select('#block_some_check').click()
       }
 
       //set blockedcookies
@@ -64,24 +57,14 @@ function retreiveSettings(callback) {
 }
 
 function clearSettings() {
-  var key = 'userSettings'
-  var prefs = "";
-  var json = {};
+  background.blocked_cookies = [];
+  background.blocked_domains = [];
+  background.blocked_all = false;
 
-  prefs += JSON.stringify({
-    'blocked_cookies': [],
-    'blocked_domains': [],
-    'blocked_all': false
-  });
-
-  json[key] = prefs;
-
-  chrome.storage.sync.set(json, function() {
-    console.log('Saved', key, prefs);
-  });
+  storeSettings();
 }
 
-// A simple Timer class.
+// simple Timer class
 function Timer() {
   this.start_ = new Date();
 
@@ -275,7 +258,7 @@ function reloadCookieTable() {
   domains.forEach(function(domain) {
     var cookies = cache.getCookies(domain);
     var row = table.insertRow(-1);
-    row.insertCell(-1).innerText = domain;
+    row.insertCell(-1).innerText = domain.substring(1);
 
     var cell = row.insertCell(-1);
     cell.innerText = cookies.length;
@@ -283,7 +266,7 @@ function reloadCookieTable() {
 
     var block_button = document.createElement("button");
     block_button.innerText = "block";
-    checkbox = selectElement('block_some_check');
+    checkbox = select('#block_some_check');
     block_button.onclick = (function() {
       if (!checkbox.checked)
         checkbox.click();
@@ -330,10 +313,11 @@ function expandSection(row) {
   domain = row.id.slice(3)
   cookies = cache.getCookies(domain)
 
-  subtable = document.getElementById(row.id + "subtable")
+  subtable = select('#' + row.id + "subtable")
 
   if (subtable) {
     row.removeChild(subtable);
+    expanded_domains.pop(domain)
   } else {
     var subtable = document.createElement("TABLE");
     subtableId = row.id + "subtable"
@@ -346,7 +330,7 @@ function expandSection(row) {
 
       var subbutton = document.createElement("button");
       subbutton.innerText = "block";
-      checkbox = selectElement('block_some_check');
+      checkbox = select('#block_some_check');
       subbutton.onclick = (function() {
         if (!checkbox.checked)
           checkbox.click();
@@ -461,11 +445,7 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
         }
       });
     });
-  } 
-}
-
-function selectElement(id) {
-  return document.getElementById(id);
+  }
 }
 
 function onload() {
@@ -490,31 +470,16 @@ document.addEventListener('DOMContentLoaded', function() {
     'input', reloadCookieTable);
   document.querySelector('#filter_div button').addEventListener(
     'click', resetFilter);
-  document.querySelector('#refresh_table_debug').addEventListener(
-    'click', reloadCookieTable);
-  document.getElementById('save_settings_button').addEventListener(
+  select('#save_settings_button').addEventListener(
     'click', storeSettings);
-  document.getElementById('clear_settings_button').addEventListener(
+  select('#clear_settings_button').addEventListener(
     'click', clearSettings);
 
 
-  checkbox_all = document.getElementById('block_all_check');
-  checkbox_some = document.getElementById('block_some_check');
+  checkbox_all = select('#block_all_check');
+  checkbox_some = select('#block_some_check');
 
   setupCheckboxes(checkbox_all, checkbox_some);
-
-
-  //switch to data manager
-  switchToData = document.getElementById('data_switch_button')
-
-  switchToData.addEventListener('click', function() {
-    chrome.tabs.query({
-      currentWindow: true,
-      active: true
-    }, function(tabs) {
-      chrome.tabs.update({
-        url: "options.html"
-      });
-    })
-  });
+  
 });
+
