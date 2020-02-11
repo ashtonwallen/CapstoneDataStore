@@ -1,0 +1,36 @@
+body {
+	height:350px;
+	width: 250px;
+	border: 1px solid black;
+}
+
+#everything {
+}
+
+#popup_switches {
+	position: relative;
+	display: inline-block;
+	width:100%;
+	margin: auto;
+	padding-left: 10px;
+
+}
+
+#tracker_popup{
+	position: relative;
+	display: inline-block;
+	margin-top: 20px;
+	float: center;
+}
+
+#cookies_popup {
+	position: relative;
+	display: inline-block;
+	float: center;
+}
+
+#quick_settings {
+	vertical-align: top;
+	float: right;
+
+}

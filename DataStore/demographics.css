@@ -1,0 +1,22 @@
+.question_input {
+	  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.demo_div {
+	text-align: center;
+	margin-left: : auto;
+	vertical-align: middle;
+}
+
+.nav-item {
+	cursor: pointer;
+}
+
+html {
+	font-family: Verdana,sans-serif;
+	font-size: 20px;
+	line-height: 1.5;
+}

@@ -3,28 +3,26 @@ window.blocked_all = false;
 window.blocked_cookies = [];
 window.blocked_domains = [];
 window.trackable_datapoints = {};
-window.track_none = false;
+window.track_none = true;
+
 window.collected_data = []
 window.temp_data = "";
 var last_position = "";
 
-//get from content script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-	console.log('gotmessage')
 	if (request.url) {
-		getLocation();
-		window.collected_data.push({
-			'id': generateId().toString(16),
-			'url': request.url,
-			'datetime': getDateTime(),
-			'location': last_position,
-			'html_data': request.html
-		});
-		console.log(window.collected_data)
+		if (!window.track_none)
+		{
+			getLocation();
+			window.collected_data.push({
+				'id': generateId().toString(16),
+				'url': getUrl(request.url),
+				'datetime': getDateTime(),
+				'location': last_position,
+				'html_data': getHtmlData(request.html)
+			});
+		}
 	}
-	// if (request.reset_all) {
-	// 	//might want to set this up once we clean up interactions
-	// }
 })
 
 //cookies
@@ -39,6 +37,13 @@ chrome.cookies.onChanged.addListener(function(info) {
 		removeCookie(info.cookie)
 	}
 });
+
+function getUrl(requestUrl){
+	if (window.trackable_datapoints['urls'])
+		return requestUrl;
+	else
+		return 'URL not provided';
+}
 
 function getLocation() {
 	var id;
@@ -85,3 +90,12 @@ function generateId() {
     });
     return uuid;
 }
+
+function getHtmlData(request) {
+	 if (window.trackable_datapoints['html_data']) 
+	 	return request.html;
+	 else
+		return "not provided"
+}
+
+setDatapoints();

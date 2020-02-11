@@ -13,36 +13,20 @@ function saveOptions() {
 
   json[key] = prefs;
 
-  chrome.storage.sync.set(json, function() {
+  chrome.storage.local.set(json, function() {
     location.reload();
   });
   console.log("Saved")
 }
 
 function retreiveSettings(callback) {
-  chrome.storage.sync.get('userSettingsData', function(result) {
-    if (Object.keys(result['userSettingsData']).length > 0) {
+  chrome.storage.local.get('userSettingsData', function(result) {
+    if (result['userSettingsData'] != null) {
       result = result['userSettingsData'];
       result = JSON.parse(result);
 
       background.trackable_datapoints = result['trackable_datapoints'];
       background.track_none = result['track_none'];
-      console.log(background.trackable_datapoints)
-
-      if (background.track_none) {
-        toggle = select('track_any_check')
-        setBox(toggle);
-        toggleAll(background.track_none)
-      } else {
-        Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
-          if (background.trackable_datapoints[datapoint]) {
-            console.log('hereshouldbesetting')
-            toggle = select(datapoint + '_id');
-            setBox(toggle)
-          }
-
-        })
-      }
     }
   });
 
@@ -67,72 +51,92 @@ function resetTrackers() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  background.setDatapoints();
-  const tracked_data_element = select('tracked_data');
-  const div_url = select('data_selection')
-
-  select('store_tracked').onclick = downloadFile;
-
-  var datapoint_all = select('track_any_check');
-  datapoint_all.onclick = (function() {
-    toggleAll(datapoint_all.checked);
-  });
-
-  setUpTrackers(div_url, tracked_data_element);
-
-  switchToCookie = select('cookie_switch_button');
-
-  switchToCookie.addEventListener('click', function() {
-    chrome.tabs.query({
-      currentWindow: true,
-      active: true
-    }, function(tabs) {
-      chrome.tabs.update({
-        url: "cookie_html.html"
-      });
-    })
-  });
-
-
-  select('save_datamanager').onclick = saveOptions;
-  select('reset_datamanager').onclick = resetSettings;
-
-}, false)
-
 function setUpTrackers(div_url, tracked_data) {
+  //Display number of records
+  numRecords = background.collected_data.length;
+  record_div = document.createElement('span');
+  record_div.setAttribute('id', 'record_num');
+  var text = "<b>" + numRecords + " records " + "</b>"
+  if (numRecords > 0 && !background.track_none)
+    text += "including: ";
+
+  record_div.innerHTML += text + "<hr>"
+  tracked_data.appendChild(record_div);
+
+
+  //set up trackers
   Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
     var datapoint_element = document.createElement('p');
     var datapoint_toggle = document.createElement('input');
+
+    var label = document.createElement("label");
+    label.setAttribute("class", "switch");
+
+
     datapoint_toggle.setAttribute('type', 'checkbox');
     datapoint_toggle.setAttribute('id', datapoint + '_id');
     datapoint_toggle.setAttribute('class', 'options_checkbox');
 
     datapoint_toggle.onclick = (function() {
       background.trackable_datapoints[datapoint] = !background.trackable_datapoints[datapoint];
-      console.log(background.trackable_datapoints)
+      var areFalse = allFalse();
+
+      select('track_any_check').checked = areFalse;
+      background.track_none = areFalse;
+
     });
 
     datapoint_element.textContent = datapoint;
 
-    datapoint_element.appendChild(datapoint_toggle);
+    label.appendChild(datapoint_toggle);
+    var span = document.createElement('span');
+    span.setAttribute('class', 'slider round');
+    label.appendChild(span)
+    datapoint_element.appendChild(label);
     div_url.appendChild(datapoint_element);
 
+    if (numRecords > 0 && background.trackable_datapoints[datapoint])
+      tracked_data.appendChild(setupMetaView(datapoint));
 
-    tracked_data.appendChild(setupMetaView(datapoint));
-
- });
-  const view_button = document.createElement('button');
-  view_button.setAttribute('id', "dataexpand_button");
-  view_button.onclick = (function() {
-    expandData();
   });
-  view_button.innerHTML = 'expand';
 
-  tracked_data.appendChild(view_button);
+  if (numRecords > 0) {
+    const view_button = document.createElement('button');
+    view_button.setAttribute('id', "dataexpand_button");
+    view_button.onclick = (function() {
+      expandData();
+    });
+    view_button.innerHTML = 'expand';
 
-    retreiveSettings();
- 
+    tracked_data.appendChild(view_button);
+  }
+
+  retreiveSettings();
+
+  if (background.track_none) {
+    toggle = select('track_any_check')
+    setBox(toggle);
+    toggleAll(background.track_none)
+  } else {
+    Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
+      if (background.trackable_datapoints[datapoint]) {
+        toggle = select(datapoint + '_id');
+        setBox(toggle)
+      }
+
+    })
+  }
+
+}
+
+function allFalse() {
+  retval = true;
+  Object.keys(background.trackable_datapoints).forEach(function(key) {
+    if (background.trackable_datapoints[key])
+      retval = false;
+  });
+
+  return retval;
 }
 
 function toggleAll(checked) {
@@ -141,13 +145,13 @@ function toggleAll(checked) {
     var elms = document.querySelectorAll('.options_checkbox');
     elms.forEach(elem => elem.disabled = true);
     resetTrackers();
-    clearStoredData();
 
   } else {
     background.track_none = false;
+    background.trackable_datapoints['urls'] = true;
+    select('urls_id').checked = true;
     var elms = document.querySelectorAll('.options_checkbox');
     elms.forEach(elem => elem.disabled = false)
-
   }
 }
 
@@ -157,10 +161,7 @@ function clearStoredData() {
 
 function setupMetaView(datapoint) {
   const data_info = document.createElement('p');
-  data_info.setAttribute('id', datapoint + "_metaview")
-
-  numRecords = background.collected_data.length;
-  data_info.textContent = datapoint + ": " + numRecords + " records"
+  data_info.textContent = datapoint;
 
   return data_info;
 }
@@ -189,7 +190,7 @@ function expandData() {
     });
     parent.appendChild(table);
 
-});
+  });
 }
 
 
@@ -200,11 +201,8 @@ function createExternalView(data) {
   });
 }
 
-function select(id) {
-  return document.getElementById(id);
-}
 
-function downloadFile() {//can do zip file if needed
+function downloadFile() { //can do zip file if needed
   fileName = "userdata/userData.txt";
   content = getUserContent();
   var blob = new Blob([content], {
@@ -218,14 +216,38 @@ function downloadFile() {//can do zip file if needed
   })
 }
 
-// TODO UPDATE FUNCTION
 function getUserContent() {
-  // retVal = ''
+  retval = '';
 
-  // background.collected_data.forEach(function(data) {
-  //   retVal += data.url + '\n';
-  //   retVal += background.collected_data['urls'][url] + '\n\n';
-  // });
+  background.collected_data.forEach(function(data) {
 
-  // return retVal;
+    Object.keys(data).forEach(function(key) {
+      retval += key + ': ' + data[key] + '\n';
+    })
+  })
+  return retval;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const tracked_data_element = select('tracked_data');
+  const div_url = select('data_selection')
+
+  select('store_tracked').onclick = downloadFile;
+
+  //set up trackers
+  var datapoint_all = select('track_any_check');
+  datapoint_all.onclick = (function() {
+    toggleAll(datapoint_all.checked);
+  });
+
+  setUpTrackers(div_url, tracked_data_element);
+
+  select('save_datamanager').onclick = saveOptions;
+  select('reset_datamanager').onclick = resetSettings;
+
+}, false)
+
+
+function select(id) {
+  return document.getElementById(id);
 }

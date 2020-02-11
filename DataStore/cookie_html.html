@@ -2,18 +2,59 @@
  <html>
  <head>
    <title>Cookie Manager</title>
-    <script src="cookie_manager.js"></script>
-    <link rel="stylesheet" href="cookie_manager.css">
+   <script src="cookie_manager.js"></script>
+   <script src="navbar.js"></script>
+   <link rel="stylesheet" href="cookie_manager.css">
+   <link rel="stylesheet" href="sliders.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
  </head>
  <body>
+
+  <!--navbar-->
+  <div id='navigation'>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand">DataStore</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" id="data_switch_button">Data Settings</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="cookie_switch_button" disabled>Cookie Manager</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="demographics_button">Demographic Information</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="guides_button">Guides</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+
+
   <div id="cookie_manager">
-    <button id="data_switch_button">Data Manager</button>
    <h2>Cookies</h2>
-</label>
-   <span id="block_all_text"> Block All <input type="checkbox" id="block_all_check"> </span>
-  <span id="block_some_text"> Block Specific <input type="checkbox" id="block_some_check"> </span>
-   <button id="refresh_table_debug">Debug refresh table</button>
-  
+
+   <div id="block_switches">  
+     <span id="block_all_text">Block All 
+      <label class="switch">
+        <input type='checkbox' id='block_all_check'>
+        <span class="slider all round"></span>
+      </label> 
+    </span>
+    <span id="block_some_text">Block Specific 
+      <label class="switch">
+        <input type='checkbox' id='block_some_check'>
+        <span class="slider round"></span>
+      </label>
+    </span>
+  </div> 
   <div id="filter_div">
     Filter: <input id="filter" type="text">
     <button>Search</button>
@@ -21,7 +62,10 @@
   <br />
   <div id="summary_div">
     Showing <span id="filter_count"></span> of <span id="total_count"></span> cookie domains.
-    <span id="delete_all_button"></span>
+  </div>
+  <div id='settings_buttons'>
+    <button id="save_settings_button">Save Settings</button>
+    <button id="clear_settings_button">Reset Settings</button>
   </div>
   <br />
   <table id="cookies">
@@ -29,12 +73,10 @@
       <th>Name</th>
       <th>Cookies</th>
     </tr>
-</table>
-   <button id="save_settings_button">Save Settings</button>
-   <button id="clear_settings_button">Reset Settings</button>
+  </table>
 </div>
- </body>
- </html>
+</body>
+</html>
 
 
 
