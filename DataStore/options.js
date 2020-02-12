@@ -37,7 +37,7 @@ function setBox(elem) {
 }
 
 function resetSettings() {
-  background.track_none = false;
+  background.track_none = true;
   clearStoredData();
   resetTrackers();
   saveOptions();
@@ -224,7 +224,8 @@ function getUserContent() {
     Object.keys(data).forEach(function(key) {
       retval += key + ': ' + data[key] + '\n';
     })
-  })
+  });
+
   return retval;
 }
 
