@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 				'url': getUrl(request.url),
 				'datetime': getDateTime(),
 				'location': last_position,
-				'html_data': getHtmlData(request.html)
+				'html_data': request.html
 			});
 		}
 	}

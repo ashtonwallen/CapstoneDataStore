@@ -402,7 +402,7 @@ function listener(info) {
 
 //still need to remove specific domains
 function block_specific_listener(info) {
-  blocked_cookies.forEach(function(cookie) {
+  background.blocked_cookies.forEach(function(cookie) {
     if (cookieMatch(cookie, info.cookie)) {
       removeCookie(info.cookie)
       return;
