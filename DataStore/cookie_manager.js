@@ -313,15 +313,16 @@ function expandSection(row) {
   domain = row.id.slice(3)
   cookies = cache.getCookies(domain)
 
-  subtable = select('#' + row.id + "subtable")
+  subtable = document.getElementById(row.id + "subtable");
 
   if (subtable) {
-    row.removeChild(subtable);
+    subtable.remove();
     expanded_domains.pop(domain)
+    return;
   } else {
     var subtable = document.createElement("TABLE");
-    subtableId = row.id + "subtable"
-    subtable.setAttribute("class", "subtable")
+    subtableId = row.id + "subtable";
+    subtable.setAttribute("class", "subtable");
     subtable.setAttribute("id", subtableId)
 
     cookies.forEach(function(cookie) {
