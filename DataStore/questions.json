@@ -1,7 +1,7 @@
 {
   "questions": 
     {
-    "q1": "Email Address",
+    "q1": "Email Address *",
     "q2": "Date Of Birth",
     "q3": "Gender Identity",
     "q4": "Ethnicity",
