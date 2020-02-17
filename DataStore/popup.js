@@ -25,9 +25,10 @@
   	dataToggle.onclick = (function() {
   		if (!dataToggle.checked)
   			background.track_none = true;
-  		else
+  		else {
   			background.track_none = false;
-
+  				background.trackable_datapoints['urls'] = true;
+  		}
   		saveSwitches();
   	});
 
@@ -40,8 +41,8 @@
   		saveSwitches();
   	});
 
-  	  	recordsNum = document.getElementById('popup_record_text');
-  	  	recordsNum.innerHTML = background.collected_data.length + " records collected";
+  	recordsNum = document.getElementById('popup_record_text');
+  	recordsNum.innerHTML = background.collected_data.length + " records collected";
 
 
   });
@@ -72,7 +73,12 @@
   		console.log('updatedsettings');
   	});
 
-  	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
-    });
+  	chrome.tabs.query({
+  		active: true,
+  		currentWindow: true
+  	}, function(tabs) {
+  		chrome.tabs.update(tabs[0].id, {
+  			url: tabs[0].url
+  		});
+  	});
   }
