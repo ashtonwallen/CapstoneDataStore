@@ -6,54 +6,19 @@ const background = chrome.extension.getBackgroundPage();
 expanded_domains = []
 
 function storeSettings() {
-  var key = 'userSettings'
-  var prefs = "";
-  var json = {};
-
-  //TODO da way this be saving gets foinked up
-  prefs += JSON.stringify({
-    'blocked_cookies': background.blocked_cookies,
-    'blocked_domains': background.blocked_domains,
-    'blocked_all': background.blocked_all
-  });
-
-  json[key] = prefs;
-
-  chrome.storage.local.set(json, function() {
-    console.log('Saved', key, prefs);
-  });
-
+  background.saveUserSettings();
   location.reload();
 }
 
-//might want to move to background
+
 function retreiveSettings(callback) {
+  background.retreiveSettings();
 
-  chrome.storage.local.get('userSettings', function(result) {
-    if (result['userSettings']) {
-      result = result['userSettings'];
-      result = JSON.parse(result);
-
-      //setblockedall
-      background.blocked_all = result['blocked_all']
-
-      if (background.blocked_all) {
-        select('#block_all_check').click()
-      } else {
-        select('#block_some_check').click()
-      }
-
-      //set blockedcookies
-      background.blocked_cookies.push(result['blocked_cookies']);
-      background.blocked_cookies.filter(onlyUnique);
-
-      //set blocked domains
-      background.blocked_domains.push(result['blocked_domains']);
-      background.blocked_domains.filter(onlyUnique);
-    }
-
-  });
-
+  if (background.blocked_all) {
+    select('#block_all_check').click()
+  } else {
+    select('#block_some_check').click()
+  }
 }
 
 function clearSettings() {
@@ -266,6 +231,7 @@ function reloadCookieTable() {
 
     var block_button = document.createElement("button");
     block_button.innerText = "block";
+    block_button.setAttribute('class', 'btn btn-danger');
     checkbox = select('#block_some_check');
     block_button.onclick = (function() {
       if (!checkbox.checked)
@@ -283,8 +249,12 @@ function reloadCookieTable() {
     //Expand button
     optId = "row" + domain;
     row.setAttribute("id", optId);
+    row.setAttribute("class", "cookie_row");
     var expand_button = document.createElement("button");
     expand_button.innerText = "expand";
+    expand_button.setAttribute("class", "btn btn-secondary");
+    expand_button.setAttribute("data-target", "#expandModal")
+    expand_button.setAttribute("data-toggle", "modal")
     expand_button.onclick = (function() {
       expanded_domains.push(domain);
       expanded_domains = expanded_domains.filter(onlyUnique);
@@ -297,9 +267,6 @@ function reloadCookieTable() {
     if (expanded_domains.indexOf(domain) != -1) {
       expandSection(row);
     }
-
-
-
   }); // end domains foreach
 }
 
@@ -315,6 +282,7 @@ function expandSection(row) {
 
   subtable = document.getElementById(row.id + "subtable");
 
+
   if (subtable) {
     subtable.remove();
     expanded_domains.pop(domain)
@@ -327,22 +295,24 @@ function expandSection(row) {
 
     cookies.forEach(function(cookie) {
       var subrow = subtable.insertRow(-1);
+      subrow.setAttribute('class','cookie_subrow')
       subrow.insertCell(-1).innerText = domain + "." + cookie.name;
 
       var subbutton = document.createElement("button");
       subbutton.innerText = "block";
+      subbutton.setAttribute('class', 'btn btn-danger');
       checkbox = select('#block_some_check');
       subbutton.onclick = (function() {
         if (!checkbox.checked)
           checkbox.click();
         background.blocked_cookies.push(cookie);
-        background.blocked_cookies.filter(onlyUnique);
+
         removeCookie(cookie);
         reloadCookieTable();
       });
 
       subrow.appendChild(subbutton);
-      row.appendChild(subtable);
+      row.appendChild(subtable)
     });
   }
 
@@ -476,11 +446,9 @@ document.addEventListener('DOMContentLoaded', function() {
   select('#clear_settings_button').addEventListener(
     'click', clearSettings);
 
-
   checkbox_all = select('#block_all_check');
   checkbox_some = select('#block_some_check');
 
   setupCheckboxes(checkbox_all, checkbox_some);
-  
-});
 
+});

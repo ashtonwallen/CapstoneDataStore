@@ -1,36 +1,11 @@
-const background = chrome.extension.getBackgroundPage();
+var background = chrome.extension.getBackgroundPage();
 
 function saveOptions() {
-  var key = 'userSettingsData'
-  var prefs = "";
-  var json = {};
-  var values;
-
-  prefs = JSON.stringify({
-    'trackable_datapoints': background.trackable_datapoints,
-    'track_none': background.track_none
-  });
-
-  json[key] = prefs;
-
-  chrome.storage.local.set(json, function() {
-    location.reload();
-  });
-  console.log("Saved")
+  background.saveUserSettings();
+  background.getFirstTimeData();
+  location.reload();
 }
 
-function retreiveSettings(callback) {
-  chrome.storage.local.get('userSettingsData', function(result) {
-    if (result['userSettingsData'] != null) {
-      result = result['userSettingsData'];
-      result = JSON.parse(result);
-
-      background.trackable_datapoints = result['trackable_datapoints'];
-      background.track_none = result['track_none'];
-    }
-  });
-
-}
 
 function setBox(elem) {
   elem.checked = true;
@@ -38,22 +13,13 @@ function setBox(elem) {
 
 function resetSettings() {
   background.track_none = true;
-  clearStoredData();
-  resetTrackers();
+  background.setDatapoints();
   saveOptions();
-}
-
-function resetTrackers() {
-  Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
-    background.trackable_datapoints[datapoint] = false;
-    select(datapoint + '_id').checked = false;
-  });
 }
 
 
 function setUpTrackers(div_url, tracked_data) {
-  //Display number of records
-  numRecords = background.collected_data.length;
+  numRecords = background.collected_data['session'].length;
   record_div = document.createElement('span');
   record_div.setAttribute('id', 'record_num');
   var text = "<b>" + numRecords + " records " + "</b>"
@@ -76,6 +42,8 @@ function setUpTrackers(div_url, tracked_data) {
     datapoint_toggle.setAttribute('type', 'checkbox');
     datapoint_toggle.setAttribute('id', datapoint + '_id');
     datapoint_toggle.setAttribute('class', 'options_checkbox');
+    datapoint_toggle.setAttribute('class', 'form-control');
+
 
     datapoint_toggle.onclick = (function() {
       background.trackable_datapoints[datapoint] = !background.trackable_datapoints[datapoint];
@@ -111,7 +79,7 @@ function setUpTrackers(div_url, tracked_data) {
     tracked_data.appendChild(view_button);
   }
 
-  retreiveSettings();
+  background.retreiveSettings();
 
   if (background.track_none) {
     toggle = select('track_any_check')
@@ -144,7 +112,6 @@ function toggleAll(checked) {
     background.track_none = true;
     var elms = document.querySelectorAll('.options_checkbox');
     elms.forEach(elem => elem.disabled = true);
-    resetTrackers();
 
   } else {
     background.track_none = false;
@@ -156,7 +123,11 @@ function toggleAll(checked) {
 }
 
 function clearStoredData() {
-  background.collected_data = [];
+var answer = window.confirm("Clear stored data?")
+if (answer) {
+      background.clearSavedData();
+      location.reload();
+}
 }
 
 function setupMetaView(datapoint) {
@@ -180,7 +151,7 @@ function expandData() {
   table.setAttribute('id', table_id);
   var header = table.createTHead();
 
-  background.collected_data.forEach(function(data) {
+  background.collected_data['session'].forEach(function(data) {
     row = table.insertRow(0)
     var row = table.insertRow(-1);
     row.setAttribute('class', 'table_row');
@@ -219,7 +190,7 @@ function downloadFile() { //can do zip file if needed
 function getUserContent() {
   retval = '';
 
-  background.collected_data.forEach(function(data) {
+  background.collected_data['session'].forEach(function(data) {
 
     Object.keys(data).forEach(function(key) {
       retval += key + ': ' + data[key] + '\n';
@@ -245,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   select('save_datamanager').onclick = saveOptions;
   select('reset_datamanager').onclick = resetSettings;
+  select('clear_tracked').onclick = clearStoredData;
 
 }, false)
 

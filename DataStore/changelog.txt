@@ -4,11 +4,10 @@ TODO::::::::::
 -MONGODB AND SIMPLE SITE FOR DATA EXCHANGE
 -CAN DOWNLOAD ZIP FILE : https://stackoverflow.com/questions/20988041/how-to-set-the-file-download-location-for-chrome-extension-using-javascript
 -look into toasts to confirm user interactions
--need to be able to show the user what they are blocking
--fix popup trackers to change settings as needed
--demographics page (dynamically load questions w json?)
--guides page
-
+- save demos to local or sync??
+- popup UI
+- viewdata page
+- need to get data outside of callbacks???? -------- SAVE THE DATA INSTEAD, YOU ONLY NEED IT FOR VIEW DATA WHICH CAN BE UPDATED ANWAYS TO TAKE A TAGGGGGGG
 -------------------
 
 2/3/20: working on popup UI and trackere
@@ -19,6 +18,17 @@ TODO::::::::::
 	- NEED TO FIX METAVIEW IN OPTIONS.JS AS WE CHANGED THE STRUCTURE OF DATA COLLECTION OBJ (done)
 
 2/10: worked on popup & quick sliders
+
+2/18:
+worked on demographics and guides
+
+2/19: consolidated settings management into background page
+
+2/20: ADDING NEW DATAPOINTS
+	- USING TREE TRAVESAL TO GET BOOKMARKS -- ALGORITHMS
+
+	
+
 
 colors:
 https://colorhunt.co/palette/170794

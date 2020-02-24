@@ -15,7 +15,7 @@
   "background": {
     "scripts": ["background.js"]
   },
-   "permissions": [ "cookies", "tabs", "http://*/*", "https://*/*", "storage", "downloads", "geolocation"],
+   "permissions": [ "cookies", "tabs", "http://*/*", "https://*/*", "storage", "downloads", "geolocation",  "bookmarks", "topSites"],
    "web_accessible_resources": [
     "questions.json"
 ]
