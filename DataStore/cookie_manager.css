@@ -2,11 +2,6 @@
 
 }
 
-html {
-	font-family: Verdana,sans-serif;
-    font-size: 20px;
-    line-height: 1.5;
-}
 #block_some_text {
 	margin-left: 15px;
 }
@@ -18,11 +13,33 @@ html {
 #cookie_manager {
 	position: relative;
 	text-align: center;
-	/*display: block;*/
 	margin-top: 20px;
-  	align-items: center;
+	max-height: inherit;
+	max-width: inherit;
+	overflow: auto ;
+	table-layout:fixed;
 }
 
 .nav-item {
 	cursor: pointer;
+}
+
+.cookie_row {
+	border-bottom: 1px solid black;
+	max-height: inherit;
+	max-width: inherit;
+
+}
+
+.cookie_subrow {
+	border: 1px solid gray
+}
+
+.btn {
+	margin: 5px;
+	right:0px;
+}
+
+h1 {
+	text-align: center;
 }

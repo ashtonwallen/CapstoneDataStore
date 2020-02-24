@@ -2,6 +2,7 @@
   switchToCookie = select_element('cookie_switch_button');
   switchToDemographics = select_element('demographics_button');
   switchToData = select_element('data_switch_button');
+  switchToGuides = select_element('guides_button');
 
   switchToData.addEventListener('click', function() {
     switchWindow('options.html')
@@ -13,6 +14,10 @@
 
   switchToDemographics.addEventListener('click', function() {
     switchWindow('demographics.html');
+  });
+  
+    switchToGuides.addEventListener('click', function() {
+    switchWindow('guides.html');
   });
 });
 
