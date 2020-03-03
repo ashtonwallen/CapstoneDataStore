@@ -35,6 +35,10 @@
 	margin-top: 10px;
 }
 
+/*#datapoint_div{
+	display: inline-block;
+}*/
+
 #tracked_data {
 	border: 5px ridge #1C6EA4;
 	border-radius: 30px;

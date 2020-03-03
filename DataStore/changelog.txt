@@ -1,13 +1,13 @@
 TODO::::::::::
 -refactor cookie_manager.js among others
--set up additional datapoints: location, metadata, webrequests, 
 -MONGODB AND SIMPLE SITE FOR DATA EXCHANGE
 -CAN DOWNLOAD ZIP FILE : https://stackoverflow.com/questions/20988041/how-to-set-the-file-download-location-for-chrome-extension-using-javascript
 -look into toasts to confirm user interactions
-- save demos to local or sync??
+- save demos to local or sync?? -- LOCAL
 - popup UI
-- viewdata page
-- need to get data outside of callbacks???? -------- SAVE THE DATA INSTEAD, YOU ONLY NEED IT FOR VIEW DATA WHICH CAN BE UPDATED ANWAYS TO TAKE A TAGGGGGGG
+- viewdata page - SET UP FOR NEW TAG SYSTEM
+- save data to local periodically
+
 -------------------
 
 2/3/20: working on popup UI and trackere
@@ -27,7 +27,7 @@ worked on demographics and guides
 2/20: ADDING NEW DATAPOINTS
 	- USING TREE TRAVESAL TO GET BOOKMARKS -- ALGORITHMS
 
-	
+2/20 - 2/26: Lots of time fixing async issues, setting up user data infrastructure
 
 
 colors:
