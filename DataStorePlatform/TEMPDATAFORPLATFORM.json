@@ -1,0 +1,24 @@
+{
+  "listings" : {
+    "101" : {
+      "demographics" : {
+        "email" : "aashton482@gmail.com",
+        "ethnicity" : "white"
+      },
+      "metadata" : {
+        "size" : "2gb",
+        "types" : "bookmarks, topsites, urls"
+      }
+    },
+    "102" : {
+      "demographics" : {
+        "email" : "test@test.com",
+        "ethnicity" : "black"
+      },
+      "metadata" : {
+        "size" : "1gb",
+        "types" : "bookmarks, urls, html"
+      }
+    }
+  }
+}
