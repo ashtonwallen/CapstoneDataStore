@@ -1,3 +1,18 @@
+// Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAJywW-CmK5QH5lIcOoHSBNJrTkSDbQmRc",
+    authDomain: "datastore-3d399.firebaseapp.com",
+    databaseURL: "https://datastore-3d399.firebaseio.com",
+    projectId: "datastore-3d399",
+    storageBucket: "datastore-3d399.appspot.com",
+    messagingSenderId: "202616377876",
+    appId: "1:202616377876:web:e74721aeedadbfcb4dcd01",
+    measurementId: "G-Z8V4LGF219"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
 var background = chrome.extension.getBackgroundPage();
 
 function saveOptions() {
@@ -221,14 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
   select('post_button').onclick = storeToFirebase;
 
 }, false)
-
-
-function storeToFirebase() {
-chrome.runtime.sendMessage({command: "add", collection: "users", data: {name: "user"}}, (msg) => {
-  console.log("response", msg)
-});
-}
-
 
 
 function select(id) {
