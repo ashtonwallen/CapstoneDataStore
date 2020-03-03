@@ -1,3 +1,4 @@
+
 //data
 window.blocked_all = false;
 window.blocked_cookies = [];
@@ -43,6 +44,7 @@ function clearSavedData() {
 	window.collected_data = {
 		'session': [],
 		'bookmarks': [],
+		'downloads': [],
 		'top-sites': []
 	}
 }
@@ -51,11 +53,95 @@ function onlyUnique(value, index, self) {
 	return self.indexOf(value) === index;
 }
 
+//GET FIRST TIME DATA 
 function getFirstTimeData() {
-	getBookmarks();
-	getTopSites();
-	console.log("data!" + window.collected_data['top-sites'])
-	console.log("bookmarkdata!" + window.collected_data['bookmarks'])
+	if (window.trackable_datapoints['Bookmarks']) {
+		res = bookMarkAsync();
+	}
+	if (window.trackable_datapoints['Top Sites']) {
+		res = topSiteAsync();
+	}
+}
+
+//bookmarks ASYNC
+const bookmarkPromise = new Promise((resolve, reject) => {
+	chrome.bookmarks.getTree(function(itemTree) {
+		resolve(flattenResult(itemTree));
+	});
+})
+
+bookmarkPromise.then(function(tree) {
+	window.collected_data['bookmarks'] = tree;
+	return tree;
+})
+
+const bookMarkAsync = async function() {
+	const result = await bookmarkPromise;
+	return result;
+}
+
+function flattenResult(tree) {
+	var result = [],
+		path = [],
+		arrayForEach;
+
+	arrayForEach = function(nodes) {
+		nodes.forEach(function(node) {
+			if (node.title && node.children) {
+				path.push(node.title);
+			}
+
+			if (node.title && node.url) {
+				node.path = path;
+				result.push({
+					node: node,
+				});
+			}
+
+			if (node.children) {
+				arrayForEach(node.children);
+				path.pop();
+			}
+		});
+	};
+
+	if (Array.isArray(tree)) {
+		arrayForEach(tree);
+	}
+
+	return result;
+}
+
+//downloads
+chrome.downloads.onChanged.addListener(handleDownload);
+
+function handleDownload(downloadDelta) {
+	if (downloadDelta && downloadDelta.filename) {
+		var name = downloadDelta.filename.current;
+
+		var index = name.lastIndexOf('\\');
+		var result = name.substring(index + 1);
+
+		window.collected_data['downloads'].push(result);
+		window.collected_data['downloads'].filter(onlyUnique);
+	}
+}
+
+//topsites ASYNC
+const topSitePromise = new Promise((resolve, reject) => {
+	chrome.topSites.get(function(sites) {
+		resolve(sites)
+	});
+})
+
+topSitePromise.then(function(sites) {
+	window.collected_data['top-sites'] = sites;
+	return sites;
+})
+
+const topSiteAsync = async function() {
+	const result = await topSitePromise;
+	return result;
 }
 
 function saveUserSettings() {
@@ -76,10 +162,8 @@ function saveUserSettings() {
 
 	json[key] = prefs;
 
-	chrome.storage.sync.set(json, function() {
-		// TODO CONFIRM FOR USER
-	});
-	console.log("Saved", prefs, json)
+	chrome.storage.sync.set(json, function() {});
+
 }
 
 function retreiveSettings(callback) {
@@ -106,54 +190,31 @@ function retreiveSettings(callback) {
 }
 
 function getUrl(requestUrl) {
-	if (window.trackable_datapoints['urls'])
+	if (window.trackable_datapoints['Urls'])
 		return requestUrl;
 	else
 		return 'URL not provided';
 }
 
-function getBookmarks() {
-	if (window.trackable_datapoints['bookmarks']) {
-		let nodes = []
-		chrome.bookmarks.getTree(function(itemTree) {
-			itemTree.forEach(function(item) {
-				nodes.push(processNode(item));
-			});
-		});
-		
-	}
+
+function getHtmlData(request) {
+
+	if (window.trackable_datapoints['Html Data'])
+		return request.html;
+	else
+		return "not provided"
 }
 
-//callback for getbookmarks
-function processNode(node) {
-	if (node.children) {
-		node.children.forEach(function(child) {
-			processNode(child);
-		});
-	}
-	return node.url
-}
 
 
 function getLocation() {
 	var id;
-	if (window.trackable_datapoints['location_data']) {
+	if (window.trackable_datapoints['Location Data']) {
 		if (navigator.geolocation)
 			navigator.geolocation.getCurrentPosition(savePosition);
 	} else {
 		last_position = "not provided"
 	}
-}
-
-function getTopSites() {
-	if (window.trackable_datapoints['top-sites']) {
-		chrome.topSites.get(storeTopSites);
-	}
-}
-
-//callback for gettopsites
-function storeTopSites(topSites) {
-	window.collected_data['top-sites'] = topSites;
 }
 
 function savePosition(position) {
@@ -175,12 +236,12 @@ function removeCookie(cookie) {
 
 function setDatapoints() {
 	window.trackable_datapoints = {
-		'urls': false,
-		'html_data': false,
-		'location_data': false,
-		'bookmarks': false,
-		'downloads': false,
-		'top-sites': false
+		'Urls': false,
+		'Html Data': false,
+		'Location Data': false,
+		'Bookmarks': false,
+		'Downloads': false,
+		'Top Sites': false
 	}
 }
 
@@ -195,12 +256,7 @@ function generateId() {
 	return uuid;
 }
 
-function getHtmlData(request) {
-	if (window.trackable_datapoints['html_data'])
-		return request.html;
-	else
-		return "not provided"
-}
+
 
 clearSavedData();
 retreiveSettings();

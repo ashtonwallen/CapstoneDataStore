@@ -61,6 +61,7 @@ function setUpTrackers(div_url, tracked_data) {
     span.setAttribute('class', 'slider round');
     label.appendChild(span)
     datapoint_element.appendChild(label);
+    datapoint_element.appendChild(document.createElement('hr'));
     div_url.appendChild(datapoint_element);
 
     if (numRecords > 0 && background.trackable_datapoints[datapoint])
@@ -123,11 +124,11 @@ function toggleAll(checked) {
 }
 
 function clearStoredData() {
-var answer = window.confirm("Clear stored data?")
-if (answer) {
-      background.clearSavedData();
-      location.reload();
-}
+  var answer = window.confirm("Clear stored data?")
+  if (answer) {
+    background.clearSavedData();
+    location.reload();
+  }
 }
 
 function setupMetaView(datapoint) {
@@ -176,7 +177,7 @@ function createExternalView(data) {
 function downloadFile() { //can do zip file if needed
   fileName = "userdata/userData.txt";
   content = getUserContent();
-  var blob = new Blob([content], {
+  var blob = new Blob([content], {  
     type: "text/plain;charset=UTF-8"
   });
   url = window.URL.createObjectURL(blob);
@@ -217,8 +218,17 @@ document.addEventListener('DOMContentLoaded', function() {
   select('save_datamanager').onclick = saveOptions;
   select('reset_datamanager').onclick = resetSettings;
   select('clear_tracked').onclick = clearStoredData;
+  select('post_button').onclick = storeToFirebase;
 
 }, false)
+
+
+function storeToFirebase() {
+chrome.runtime.sendMessage({command: "add", collection: "users", data: {name: "user"}}, (msg) => {
+  console.log("response", msg)
+});
+}
+
 
 
 function select(id) {

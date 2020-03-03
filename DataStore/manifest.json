@@ -16,7 +16,6 @@
     "scripts": ["background.js"]
   },
    "permissions": [ "cookies", "tabs", "http://*/*", "https://*/*", "storage", "downloads", "geolocation",  "bookmarks", "topSites"],
-   "web_accessible_resources": [
-    "questions.json"
-]
+    "content_security_policy":"script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+
 }
