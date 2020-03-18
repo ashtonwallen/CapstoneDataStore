@@ -3,7 +3,7 @@
     "101" : {
       "demographics" : {
         "email" : "aashton482@gmail.com",
-        "ethnicity" : "white"
+        "occupation" : "student"
       },
       "metadata" : {
         "size" : "2gb",
@@ -13,7 +13,7 @@
     "102" : {
       "demographics" : {
         "email" : "test@test.com",
-        "ethnicity" : "black"
+        "occupation" : "construction"
       },
       "metadata" : {
         "size" : "1gb",

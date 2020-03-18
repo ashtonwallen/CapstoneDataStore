@@ -1,18 +1,3 @@
-// Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyAJywW-CmK5QH5lIcOoHSBNJrTkSDbQmRc",
-    authDomain: "datastore-3d399.firebaseapp.com",
-    databaseURL: "https://datastore-3d399.firebaseio.com",
-    projectId: "datastore-3d399",
-    storageBucket: "datastore-3d399.appspot.com",
-    messagingSenderId: "202616377876",
-    appId: "1:202616377876:web:e74721aeedadbfcb4dcd01",
-    measurementId: "G-Z8V4LGF219"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-
 var background = chrome.extension.getBackgroundPage();
 
 function saveOptions() {
@@ -190,10 +175,10 @@ function createExternalView(data) {
 
 
 function downloadFile() { //can do zip file if needed
-  fileName = "userdata/userData.txt";
+  fileName = "userData.txt";
   content = getUserContent();
   var blob = new Blob([content], {  
-    type: "text/plain;charset=UTF-8"
+    type: "application/json"
   });
   url = window.URL.createObjectURL(blob);
 
@@ -204,17 +189,58 @@ function downloadFile() { //can do zip file if needed
 }
 
 function getUserContent() {
-  retval = '';
+  var retVal = {};
 
-  background.collected_data['session'].forEach(function(data) {
+  var header = getMetaData();
 
-    Object.keys(data).forEach(function(key) {
-      retval += key + ': ' + data[key] + '\n';
-    })
+  var content = {}
+  Object.keys(background.collected_data).forEach(function(key) {
+    content[key] = background.collected_data[key]
   });
 
-  return retval;
+  retVal['header'] = header;
+  retVal['content'] = content;
+  console.log(retVal)
+  
+  retval = JSON.stringify()
+
+
+  return retVal;
 }
+
+function getMetaData() {
+  retVal = {};
+  var filtered = Object.keys(background.trackable_datapoints).reduce(function (filtered, key) {
+    if (background.trackable_datapoints[key]) filtered.push(key)
+      return filtered;
+    }, []);
+
+  retVal['metaData'] = filtered
+  
+  chrome.storage.local.get('userDemographics', function(result) {
+		if (result['userDemographics']) {
+      result = result['userDemographics']
+      retVal['userDemographics'] = result;
+    }
+  });
+
+  return retVal;
+}
+
+// for saving json data ---------------------------------------------------------------------------
+// var data = {
+//   key: 'value'
+// };
+// var fileName = 'myData.json';
+
+// // Create a blob of the data
+// var fileToSave = new Blob([JSON.stringify(data)], {
+//   type: 'application/json',
+//   name: fileName
+// });
+
+// // Save the file
+// saveAs(fileToSave, fileName);
 
 document.addEventListener('DOMContentLoaded', function() {
   const tracked_data_element = select('tracked_data');
@@ -233,7 +259,6 @@ document.addEventListener('DOMContentLoaded', function() {
   select('save_datamanager').onclick = saveOptions;
   select('reset_datamanager').onclick = resetSettings;
   select('clear_tracked').onclick = clearStoredData;
-  select('post_button').onclick = storeToFirebase;
 
 }, false)
 

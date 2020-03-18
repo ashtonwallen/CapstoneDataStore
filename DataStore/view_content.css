@@ -12,7 +12,7 @@
  #htmlcontent{
  		/*//top: 0; left: 0; bottom: 0; right: 0;*/
     box-shadow: inset 1px 1px 3px 4px rgba(0,0,0,0.3);
-    width:inheri;t;
+    width:inherit;
     height:1000px;
     overflow: scroll;
  }
