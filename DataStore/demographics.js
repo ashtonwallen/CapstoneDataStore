@@ -15,7 +15,7 @@ function saveAnswers() {
 	var date_reg = /^[0-9]{2}[\/][0-9]{2}[\/][0-9]{4}$/g;
 	var email_reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
-	if (email_reg.test(select('q1').value)) {
+	if (email_reg.test(select('Email Address').value)) {
 		storeSettings();
 	} else {
 		alert('Please enter valid email address')
@@ -24,9 +24,22 @@ function saveAnswers() {
 
 }
 
+
+function retreiveSettings(callback) {
+	chrome.storage.local.get('userDemographics', function(result) {
+			
+			result = JSON.parse(result['userDemographics'])
+
+			var elms = document.querySelectorAll('.question_input');
+			elms.forEach(function(elem) {
+				if (result[elem.id])
+					elem.value = result[elem.id]
+			})
+	});
+}
+
 function storeSettings() {
 	var key = 'userDemographics'
-	var prefs = "";
 	var json = {};
 	var questionsWithAnswers = {}
 
@@ -35,9 +48,7 @@ function storeSettings() {
 		questionsWithAnswers[elem.id] = elem.value
     })
 
-	prefs += JSON.stringify({
-		'demo_answers': questionsWithAnswers
-	});
+	var prefs = JSON.stringify(questionsWithAnswers);
 
 	json[key] = prefs;
 
@@ -55,20 +66,3 @@ function resetDemo() {
     storeSettings();
 }
 
-
-function retreiveSettings(callback) {
-	chrome.storage.local.get('userDemographics', function(result) {
-		if (result['userDemographics']) {
-			result = result['userDemographics'];
-			result = JSON.parse(result);
-
-			 var elms = document.querySelectorAll('.question_input');
-			elms.forEach(function(elem) {
-				if (result['demo_answers'][elem.id])
-					elem.value = result['demo_answers'][elem.id]
-			})
-		}
-
-	});
-
-}

@@ -42,6 +42,17 @@ chrome.cookies.onChanged.addListener(function(info) {
 	}
 });
 
+function setDatapoints() {
+	window.trackable_datapoints = {
+		'Urls': false,
+		'Html Data': false,
+		'Location Data': false,
+		'Bookmarks': false,
+		'Downloads': false,
+		'Top Sites': false
+	}
+}
+
 function clearSavedData() {
 	window.collected_data = {
 		'session': [],
@@ -234,17 +245,6 @@ function removeCookie(cookie) {
 		"url": url,
 		"name": cookie.name
 	});
-}
-
-function setDatapoints() {
-	window.trackable_datapoints = {
-		'Urls': false,
-		'Html Data': false,
-		'Location Data': false,
-		'Bookmarks': false,
-		'Downloads': false,
-		'Top Sites': false
-	}
 }
 
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php

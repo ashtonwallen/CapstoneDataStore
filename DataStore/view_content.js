@@ -1,3 +1,5 @@
+//NEED TO UPDATE DATA WHEN USER CHANGES IT.
+
 const background = chrome.extension.getBackgroundPage();
 received_data = '';
 

@@ -2,9 +2,10 @@ TODO::::::::::
 -look into toasts to confirm user interactions
 - popup UI
 - save data to local periodically
-- Set up firebase
 - fix downloaded data format
 - MAKE IS SO WHEN YOU CLICK "POST DATA" IT DOWNLOADS IN AN APPROPRIATE FORMAT, THEN DIRECTS TO THE DATASTORE UPLOAD PAGE
+- UPDATE DATA WHEN USER HITS SAVE ON VIEW AND EDIT COLLECTED DATA PAGE
+- update num records to reflect non session records 
 
 -------------------
 
