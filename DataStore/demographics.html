@@ -1,68 +1,75 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Demographics</title>
-	<script src="demographics.js"></script>
-	<script src="navbar.js"></script>
-	<link rel="stylesheet" href="demographics.css">
-	<link rel="stylesheet" href="all_style.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Demographics</title>
+    <script src="demographics.js"></script>
+    <script src="navbar.js"></script>
+    <link rel="stylesheet" href="demographics.css">
+    <link rel="stylesheet" href="all_style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body>
-	<!--navbar-->
-	<div id='navigation'>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand">DataStore</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!--navbar-->
+    <div id='navigation'>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">DataStore</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" id="data_switch_button">Data Settings</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="cookie_switch_button">Cookie Manager</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="demographics_button" disabled><b>Demographic Information</b></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="guides_button">Guides</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="data_switch_button">Data Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="cookie_switch_button">Cookie Manager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="demographics_button" disabled><b>Demographic Information</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="guides_button">Guides</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
 
-		<div class="container">
-			<div class="card border-0 shadow my-5">
-				<div class="card-body p-5">
-					<h1 class="font-weight-light">Demographics Data</h1><hr>
+        <div class="container">
+            <div class="card border-0 shadow my-5">
+                <div class="card-body p-5">
+                    <h1 class="font-weight-light">Demographics Data</h1>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Email Address *</b>
-						<input id='Email Address' class='question_input'></input>
-					</div><hr><hr>
+                    <div class='question_div'>
+                        <b>Email Address *</b>
+                        <input id='Email Address' class='question_input'></input>
+                    </div>
+                    <hr>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Date Of Birth</b>
-						<input type='date' id='Date Of Birth' class='question_input'></input><br>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>Date Of Birth</b>
+                        <input type='date' id='Date Of Birth' class='question_input'></input><br>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Gender Identity</b>
-						<select id='Gender' class='question_input'>
+                    <div class='question_div'>
+                        <b>Gender Identity</b>
+                        <select id='Gender' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="Male">Male</option>
 							<option value="Female">Female</option>
 							<option value="Other">Other</option>
 						</select>
-					</div><hr>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Ethnicity</b>
-						<select id='Ethnicity' class='question_input'>
+                    <div class='question_div'>
+                        <b>Ethnicity</b>
+                        <select id='Ethnicity' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="White">White</option>
 							<option value="Hispanic/Latino">Hispanic/Latino</option>
@@ -70,12 +77,13 @@
 							<option value="Native American">Native American</option>
 							<option value="Asian/Pacific Islander">Asian/Pacific Islander</option>
 						</select>
-					</div><hr>
+                    </div>
+                    <hr>
 
 
-					<div class='question_div'>
-						<b>Education</b>
-						<select id='Education' class='question_input'>
+                    <div class='question_div'>
+                        <b>Education</b>
+                        <select id='Education' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="Some High School">Some High School</option>
 							<option value="High School Diploma or Equivalent">High School Diploma or Equivalent</option>
@@ -83,13 +91,14 @@
 							<option value="Doctorate">Doctorate</option>
 							<option value="Other">Other</option>
 						</select>
-					</div><hr>
+                    </div>
+                    <hr>
 
 
 
-					<div class='question_div'>
-						<b>Employment Status</b>
-						<select id='Employment Status' class='question_input'>
+                    <div class='question_div'>
+                        <b>Employment Status</b>
+                        <select id='Employment Status' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="Employed full-time">Employed full-time</option>
 							<option value="Employed part-time">Employed part-time</option>
@@ -98,17 +107,20 @@
 							<option value="Student">Student</option>
 							<option value="Unable to work">Unable to work</option>
 						</select>
-					</div><hr><hr>
+                    </div>
+                    <hr>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Occupation</b>
-						<input id='Occupation' class='question_input'></input>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>Occupation</b>
+                        <input id='Occupation' class='question_input'></input>
+                    </div>
+                    <hr>
 
-					<!-- lists countries, very long -->
-					<div class='question_div'>
-						<b>Nationality</b><br>
-						<select id="Nationality" name="country">
+                    <!-- lists countries, very long -->
+                    <div class='question_div'>
+                        <b>Nationality</b><br>
+                        <select id="Nationality" name="country">
 							<option value="NA">N/A</option>
 							<option value="Afganistan">Afghanistan</option>
 							<option value="Albania">Albania</option>
@@ -357,16 +369,19 @@
 							<option value="Zambia">Zambia</option>
 							<option value="Zimbabwe">Zimbabwe</option>
 						</select>
-					</div><hr><hr>
+                    </div>
+                    <hr>
+                    <hr>
 
-					<div class='question_div'>
-						<b>State/Province</b>
-						<input id='State/Province' class='question_input'></input>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>State or Province</b>
+                        <input id='State or Province' class='question_input'></input>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Marital Status</b>
-						<select id='Marital Status' class='question_input'>
+                    <div class='question_div'>
+                        <b>Marital Status</b>
+                        <select id='Marital Status' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="Married">Married</option>
 							<option value="Single">Single</option>
@@ -374,11 +389,12 @@
 							<option value=">In domestic partnership">In domestic partnership</option>
 							<option value="Other">Other</option>
 						</select>
-					</div><hr>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Annual Household Income</b>
-						<select id='Annual Household Income' class='question_input'>
+                    <div class='question_div'>
+                        <b>Annual Household Income</b>
+                        <select id='Annual Household Income' class='question_input'>
 							<option value="NA">N/A</option>
 							<option value="Below $10k">Below $10k</option>
 							<option value="$10k-$50k">$10k-$50k</option>
@@ -386,42 +402,51 @@
 							<option value="$100k-$150k">$100k-$150k</option>
 							<option value="Over $150k">Over $150k</option>
 						</select>
-					</div><hr>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Number of Children</b>
-						<input type='number' id='Number of Children' class='question_input'></input>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>Number of Children</b>
+                        <input type='number' id='Number of Children' class='question_input'></input>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Place of Birth</b>
-						<input id='Place of Birth' class='question_input'></input>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>Place of Birth</b>
+                        <input id='Place of Birth' class='question_input'></input>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Political Affiliation</b>
-						<input id='Political Affiliation' class='question_input'></input>
-					</div><hr><hr>
+                    <div class='question_div'>
+                        <b>Political Affiliation</b>
+                        <input id='Political Affiliation' class='question_input'></input>
+                    </div>
+                    <hr>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Religious Affiliation</b>
-						<input id='Religious Affiliation' class='question_input'></input>
-					</div><hr>
+                    <div class='question_div'>
+                        <b>Religious Affiliation</b>
+                        <input id='Religious Affiliation' class='question_input'></input>
+                    </div>
+                    <hr>
 
-					<div class='question_div'>
-						<b>Languages Spoken</b>
-						<input id='Languages Spoken' class='question_input'></input>
-					</div><hr><hr>
-					<div id='buttons'>
-						<button class="btn btn-success" id='save_demo'>Save</button>
-						<button class="btn btn-danger" id='reset_demo'>Reset</button>
-					</div>
-					<div style="height: 50px"></div>
+                    <div class='question_div'>
+                        <b>Languages Spoken</b>
+                        <input id='Languages Spoken' class='question_input'></input>
+                    </div>
+                    <hr>
+                    <hr>
+                    <div id='buttons'>
+                        <button class="btn btn-success" id='save_demo'>Save</button>
+                        <button class="btn btn-danger" id='reset_demo'>Reset</button>
+                    </div>
+                    <div style="height: 50px"></div>
 
-				</div>
-			</div>
-		</div>
+                </div>
+            </div>
+        </div>
 
-		
-	</body>
-	</html>
+
+</body>
+
+</html>

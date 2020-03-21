@@ -1,19 +1,49 @@
-//NEED TO UPDATE DATA WHEN USER CHANGES IT.
-
 const background = chrome.extension.getBackgroundPage();
-received_data = '';
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+            "from a content script:" + sender.tab.url :
+            "from the extension");
+        if (request.greeting == "hello")
+            sendResponse({ farewell: "goodbye" });
+    });
 
 document.addEventListener('DOMContentLoaded', function() {
-	display = document.getElementById('display_view');
-	content = document.getElementById('view_content');
-	title = document.getElementById('display_title');
-	save = document.getElementById('save_edited').onclick = (function(){
-		//element['html_data'] = content.textContent; TODO FIX
-	});
+    var display = document.getElementById('display_view');
+    var content = document.getElementById('view_content');
+    var title = document.getElementById('display_title');
+    var save = document.getElementById('save_edited');
 
-	title.innerHTML = '<b>' + background.temp_data['url'] + "<br> Session:</b> " + background.temp_data['id'] + '</b><br>' + content.innerHTML +
-		"<b>Location: </b>" + background.temp_data['location'] + "<br><b>Date Time: </b>" + background.temp_data['datetime'] + "<br><b> HTML Content: </b>";
+    var key = Object.keys(background.temp_data)[0];
+    var data = background.temp_data[key];
 
-	console.log(background.temp_data['html_data'])
-	content.textContent = background.temp_data['html_data'];
+    save.onclick = (function() {
+
+        background.collected_data['session'].forEach(function(obj) {
+            if (obj.id == data.id) {
+                obj['html_data'] = content.textContent;
+            }
+        })
+    });
+
+    if (key == 'session') {
+        save.style.visibility = "visible";
+        title.innerHTML = '<b>' + data['url'] + "<br> Session:</b> " + data['id'] + '</b><br>' + content.innerHTML +
+            "<b>Location: </b>" + data['location'] + "<br><b>Date Time: </b>" + data['datetime'] + "<br><b> HTML Content: </b>";
+        content.textContent = data['html_data'];
+    } else {
+        save.style.visibility = "hidden";
+        title.innerHTML = '<b>' + key + '</b><br>';
+        document.getElementById('maintitle').innerText = 'View Collected Data'
+
+        if (data.length > 1) {
+            data.forEach(function(data) {
+                content.innerHTML += JSON.stringify(data) + '<hr>';
+            });
+        } else {
+            content.innerHTML += '<b>Waiting on data... Check back soon</br>';
+        }
+
+    }
 });
