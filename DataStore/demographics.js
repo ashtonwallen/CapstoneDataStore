@@ -20,6 +20,7 @@ function saveAnswers() {
     if (email_reg.test(select('Email Address').value)) {
         storeSettings();
         background.getDemographics();
+        location.reload();
     } else {
         alert('Please enter valid email address')
     }

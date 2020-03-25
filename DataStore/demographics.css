@@ -1,43 +1,32 @@
 .question_input {
-  display: flex;
-  margin-top: 5px;
-
+    display: flex;
+    margin-top: 5px;
 }
 
 .question_div {
-  margin: 0 auto;
-  width: 50%;
-  padding: 10px;
+    margin: 0 auto;
+    width: 50%;
+    padding: 10px;
 }
 
 #demo_div {
-  margin: auto;
-  width: 30%;
-  padding: 10px;
-  margin-bottom: 10px;
-
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .nav-item {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 #buttons {
-  margin: auto;
-  width: 30%;
-  padding: 10px;
-  margin-bottom: 10px;
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
 }
-
 
 h2 {
-	text-align: center;
+    text-align: center;
 }
-
-/*hr {
-  border: 0;
-  clear:both;
-  display:block;
-  width: 96%;               
-  height: 1px;
-}*/

@@ -1,9 +1,10 @@
 TODO::::::::::
 - popup UI
-- give each user unique id and use as their listing do they cant duplicate
+- give each user unique id and use as their listing so they cant duplicate
 - make website live
 	- - post button redirect
 - add an about page with info about extension and how it works
+- FIX TRACKER SLIDERS NOT CHANGING EACH OTHER
 
 -------------------
 
@@ -29,4 +30,15 @@ worked on demographics and guides
 2/27: ASYNC issues fixed, cleanup
 
 3/3 - started on platform 
+
+
+3/5-3/21:
+Updated viewdata page to support all data points
+Created and added fuctionality to platform
+updated extension to allow downloading of data and redirect to platform for listing
+consolidated buttons
+added alerts to confirm user interactions
+Updated downloaded data format 
+
+
 

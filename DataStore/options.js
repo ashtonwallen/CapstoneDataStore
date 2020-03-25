@@ -130,7 +130,11 @@ function toggleAll(checked) {
     if (checked) {
         background.track_none = true;
         var elms = document.querySelectorAll('.options_checkbox');
-        elms.forEach(elem => elem.disabled = true);
+        elms.forEach(function(elem) {
+            elem.checked = false;
+            elem.disabled = true;
+
+        });
 
     } else {
         background.track_none = false;
@@ -218,19 +222,22 @@ function downloadFile() { //can do zip file if needed
     var fileName = 'data.json';
     var content = getUserContent();
 
-    //need to add user content -- make object
+    if (content.header.metaData == [] || content.header.userDemographics['Email Address'] == '')
+        alert("Please ensure you have collected personal data or provided an email address in the user demographics section")
+    else {
+        console.log()
+        var fileToSave = new Blob([JSON.stringify(content)], {
+            type: 'application/json',
+            name: fileName
+        });
 
-    var fileToSave = new Blob([JSON.stringify(content['header'])], {
-        type: 'application/json',
-        name: fileName
-    });
+        url = window.URL.createObjectURL(fileToSave);
 
-    url = window.URL.createObjectURL(fileToSave);
-
-    chrome.downloads.download({
-        url: url,
-        filename: fileName
-    })
+        chrome.downloads.download({
+            url: url,
+            filename: fileName
+        })
+    }
 }
 
 function getUserContent() {
@@ -264,7 +271,7 @@ function getMetaData() {
 function postStoredData() {
     downloadFile();
 
-    //go to listing site once live
+    //go to listing site once live ----------------------------------------------
     // chrome.tabs.create({
     //     url: chrome.runtime.getURL("../DataStorePlatform/new_listing.html"),
     // });
