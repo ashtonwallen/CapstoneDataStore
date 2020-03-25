@@ -14,13 +14,19 @@ const config = {
 };
 firebase.initializeApp(config);
 var database = firebase.database();
+ref = database.ref("/listings")
+
+// ref.on("child_added", function(snapshot, prevChildKey) {
+//     var newPost = snapshot.val();
+//     console.log("post: " + newPost.demo['Email Address']);
+// });
 
 
 function writeInfo(data) {
     var data_div = select('meta_info');
     var demo_div = select('demo_info');
-    var demographics = data['userDemographics'];
-    var metaData = data['metaData'];
+    var demographics = data.header['userDemographics'];
+    var metaData = data.header['metaData'];
 
     var filesize_div = document.createElement('div');
     filesize_div.innerHTML = '<p>' + '<b>' + fileInput.files[0].size.toString() + ' bytes including:</b>\t'
@@ -51,10 +57,8 @@ function displayData(data, div) {
 
             div.append(child)
         }
-
     });
 }
-
 
 function handleFileSelect(evt) {
     fr.readAsText(evt.target.files[0])
@@ -65,14 +69,13 @@ fr.onload = e => {
 };
 
 function writeUserData(id, json) {
-
-    console.log(json.userDemographics)
     firebase.database().ref('listings/' + id).set({
-        'meta': json.metaData,
-        'demo': json.userDemographics
+        'meta': json.header.metaData,
+        'demo': json.header.userDemographics
     });
-}
 
+    window.location.href = "index.html";
+}
 
 function generateId() {
     var dt = new Date().getTime();
