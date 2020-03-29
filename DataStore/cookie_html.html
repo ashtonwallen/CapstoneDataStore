@@ -1,89 +1,91 @@
- <!DOCTYPE html>
- <html>
- <head>
-   <title>Cookie Manager</title>
-   <script src="cookie_manager.js"></script>
-   <script src="navbar.js"></script>
-   <link rel="stylesheet" href="cookie_manager.css">
-   <link rel="stylesheet" href="sliders.css">
-   <link rel="stylesheet" href="all_style.css">
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!DOCTYPE html>
+<html>
 
- </head>
- <body>
+<head>
+    <title>Cookie Manager</title>
+    <script src="cookie_manager.js"></script>
+    <script src="navbar.js"></script>
+    <link rel="stylesheet" href="cookie_manager.css">
+    <link rel="stylesheet" href="sliders.css">
+    <link rel="stylesheet" href="all_style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <!--navbar-->
-  <div id='navigation'>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand">DataStore</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+</head>
+
+<body>
+
+    <!--navbar-->
+    <div id='navigation'>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">DataStore</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" id="data_switch_button">Data Settings</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="cookie_switch_button" disabled><b>Cookie Manager</b></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="demographics_button">Demographic Information</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="guides_button">Guides</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="data_switch_button">Data Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="cookie_switch_button" disabled><b>Cookie Manager</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="demographics_button">Demographic Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="guides_button">Guides</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="about_button">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
 
-  <div class="container" id="cookie_container">
-    <div class="card border-0 shadow my-5">
-      <div class="card-body p-5">
-        <h1 class="font-weight-light">Cookie Manager</h1>
-        <div id="cookie_manager">
-         <div id="block_switches">  
-           <span id="block_all_text">Block All 
+    <div class="container" id="cookie_container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <h1 class="font-weight-light">Cookie Manager</h1>
+                <div id="cookie_manager">
+                    <div id="block_switches">
+                        <span id="block_all_text">Block All 
             <label class="switch">
               <input type='checkbox' id='block_all_check'>
               <span class="slider all round"></span>
-            </label> 
-          </span>
-          <span id="block_some_text">Block Specific 
+                        </label>
+                        </span>
+                        <span id="block_some_text">Block Specific 
             <label class="switch">
               <input type='checkbox' id='block_some_check'>
               <span class="slider round"></span>
-            </label>
-          </span>
-        </div> 
-        <div id="filter_div">
-          Filter: <input id="filter" type="text">
-          <button>Search</button>
+                        </label>
+                        </span>
+                    </div>
+                    <div id="filter_div">
+                        Filter: <input id="filter" type="text">
+                        <button>Search</button>
+                    </div>
+                    <br />
+                    <div id="summary_div">
+                        Showing <span id="filter_count"></span> of <span id="total_count"></span> cookie domains.
+                    </div>
+                    <div id='settings_buttons'>
+                        <button id="save_settings_button">Save Settings</button>
+                        <button id="clear_settings_button">Reset Settings</button>
+                    </div>
+                    <br />
+                    <table id="cookies">
+                        <tr class="header">
+                            <th>Source</th>
+                            <th>Number of Cookies</th>
+                        </tr>
+                    </table>
+                </div>
+                <div style="height: 50px"></div>
+            </div>
         </div>
-        <br />
-        <div id="summary_div">
-          Showing <span id="filter_count"></span> of <span id="total_count"></span> cookie domains.
-        </div>
-        <div id='settings_buttons'>
-          <button id="save_settings_button">Save Settings</button>
-          <button id="clear_settings_button">Reset Settings</button>
-        </div>
-        <br />
-        <table id="cookies">
-          <tr class="header">
-            <th>Source</th>
-            <th>Number of Cookies</th>
-          </tr>
-        </table>
-      </div>
-      <div style="height: 50px"></div>
     </div>
-  </div>
-</div>
 </body>
+
 </html>
-
-
-
-
