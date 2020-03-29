@@ -6,11 +6,6 @@ function saveOptions() {
     location.reload();
 }
 
-
-function setBox(elem) {
-    elem.checked = true;
-}
-
 function resetSettings() {
     var answer = window.confirm("Reset tracker settings?")
     if (answer) {
@@ -47,6 +42,12 @@ function setUpTrackers(div_url, tracked_data) {
     record_div.innerHTML += text + "<hr>"
     tracked_data.appendChild(record_div);
 
+    //set up tracker all
+    var datapoint_all = select('track_any_check');
+    datapoint_all.onclick = (function() {
+        background.track_none = !background.track_none
+        toggleAll(background.track_none)
+    });
 
     //set up trackers
     Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
@@ -59,9 +60,8 @@ function setUpTrackers(div_url, tracked_data) {
 
         datapoint_toggle.setAttribute('type', 'checkbox');
         datapoint_toggle.setAttribute('id', datapoint + '_id');
-        datapoint_toggle.setAttribute('class', 'options_checkbox');
-        datapoint_toggle.setAttribute('class', 'form-control');
-
+        datapoint_toggle.setAttribute('class', 'options_checkbox form-control');
+        console.log(datapoint_toggle)
 
         datapoint_toggle.onclick = (function() {
             background.trackable_datapoints[datapoint] = !background.trackable_datapoints[datapoint];
@@ -69,7 +69,7 @@ function setUpTrackers(div_url, tracked_data) {
 
             select('track_any_check').checked = areFalse;
             background.track_none = areFalse;
-
+            toggleAll(background.track_none);
         });
 
         datapoint_element.textContent = datapoint;
@@ -102,22 +102,37 @@ function setUpTrackers(div_url, tracked_data) {
 
     if (background.track_none) {
         toggle = select('track_any_check')
-        setBox(toggle);
+        toggle.checked = true;
         toggleAll(background.track_none)
     } else {
         Object.keys(background.trackable_datapoints).forEach(function(datapoint) {
             if (background.trackable_datapoints[datapoint]) {
-                toggle = select(datapoint + '_id');
-                setBox(toggle)
+                select(datapoint + '_id').checked = true;
             }
-
         })
     }
 
 }
 
+
+function toggleAll(checked) {
+    if (checked) {
+        var elms = document.querySelectorAll('.options_checkbox');
+        elms.forEach(function(elem) {
+            elem.checked = false;
+            elem.disabled = true;
+        });
+
+    } else {
+        background.trackable_datapoints['Urls'] = true;
+        select('Urls_id').checked = true;
+        var elms = document.querySelectorAll('.options_checkbox');
+        elms.forEach(elem => elem.disabled = false)
+    }
+}
+
 function allFalse() {
-    retval = true;
+    var retval = true;
     Object.keys(background.trackable_datapoints).forEach(function(key) {
         if (background.trackable_datapoints[key])
             retval = false;
@@ -126,24 +141,6 @@ function allFalse() {
     return retval;
 }
 
-function toggleAll(checked) {
-    if (checked) {
-        background.track_none = true;
-        var elms = document.querySelectorAll('.options_checkbox');
-        elms.forEach(function(elem) {
-            elem.checked = false;
-            elem.disabled = true;
-
-        });
-
-    } else {
-        background.track_none = false;
-        background.trackable_datapoints['urls'] = true;
-        select('urls_id').checked = true;
-        var elms = document.querySelectorAll('.options_checkbox');
-        elms.forEach(elem => elem.disabled = false)
-    }
-}
 
 function clearStoredData() {
     var answer = window.confirm("Clear stored data and reset tracker settings?")
@@ -282,11 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const div_url = select('data_selection')
 
 
-    //set up trackers
-    var datapoint_all = select('track_any_check');
-    datapoint_all.onclick = (function() {
-        toggleAll(datapoint_all.checked);
-    });
+
 
     setUpTrackers(div_url, tracked_data_element);
 

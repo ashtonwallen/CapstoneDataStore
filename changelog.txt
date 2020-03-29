@@ -1,10 +1,7 @@
 TODO::::::::::
-- popup UI
-- give each user unique id and use as their listing so they cant duplicate
 - make website live
 	- - post button redirect
-- add an about page with info about extension and how it works
-- FIX TRACKER SLIDERS NOT CHANGING EACH OTHER
+
 
 -------------------
 
@@ -39,6 +36,9 @@ updated extension to allow downloading of data and redirect to platform for list
 consolidated buttons
 added alerts to confirm user interactions
 Updated downloaded data format 
+
+3/29:
+fixed slider issues, upload issues, added about page
 
 
 

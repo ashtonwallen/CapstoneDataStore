@@ -16,17 +16,17 @@ firebase.initializeApp(config);
 var database = firebase.database();
 ref = database.ref("/listings")
 
-// ref.on("child_added", function(snapshot, prevChildKey) {
-//     var newPost = snapshot.val();
-//     console.log("post: " + newPost.demo['Email Address']);
-// });
-
 
 function writeInfo(data) {
     var data_div = select('meta_info');
     var demo_div = select('demo_info');
     var demographics = data.header['userDemographics'];
     var metaData = data.header['metaData'];
+
+    if (!demographics || !metaData) {
+        alert('Invalid Data Format')
+        return;
+    }
 
     var filesize_div = document.createElement('div');
     filesize_div.innerHTML = '<p>' + '<b>' + fileInput.files[0].size.toString() + ' bytes including:</b>\t'
@@ -65,7 +65,11 @@ function handleFileSelect(evt) {
 };
 
 fr.onload = e => {
-    writeInfo(parsed(e.target.result));
+    try {
+        writeInfo(parsed(e.target.result));
+    } catch (e) {
+        alert('Invalid Data Format')
+    }
 };
 
 function writeUserData(id, json) {

@@ -1,120 +1,131 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Guides</title>
 
-	<script src="navbar.js"></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="guides.css">
-	  <link rel="stylesheet" href="all_style.css">
+<head>
+    <title>Guides</title>
+
+    <script src="navbar.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="guides.css">
+    <link rel="stylesheet" href="all_style.css">
 </head>
+
 <body>
-	<div id='navigation'>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand">DataStore</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <div id='navigation'>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">DataStore</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a class="nav-link" id="data_switch_button">Data Settings</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="cookie_switch_button">Cookie Manager</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="demographics_button">Demographic Information</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" id="guides_button" disabled><b>Guides</b></a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	</div>
-
-
-	<div class="container">
-  <div class="card border-0 shadow my-5">
-    <div class="card-body p-5">
-      <h1 class="font-weight-light">Data Protection Best Practices Guide</h1>
-      <p>By adjusting a few simple settings on your devices and accounts, you can maintain security against outside parties&rsquo;, limit unwanted attempts to access your data, and ensure consent is not given to provide information to others.&nbsp;</p>
-	<p><hr><br /></p>
-	<p><strong>Secure your browsing</strong></p>
-	<p> Companies and websites track everything you do online. Every ad, social network button, and website collects information about your location, browsing habits, and more. This data reveals a lot about you and is valuable to advertisers to pinpoint who you are as a person as well as your associated habits.</p>
-	<ul>
-		<li><strong>Block Ads</strong></li>
-		<ul>
-			<ul>
-				<li>Extensions such as <a href="https://adblockplus.org/">Adblock Plus</a> or <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en">Ublock Origin</a> allow for the blocking of ads that are both targeted toward you and collecting data about you</li>
-			</ul>
-		</ul>
-	</ul>
-	<ul>
-		<li><strong>Block Cookies</strong></li>
-	</ul>
-	<ul>
-		<ul>
-			<ul>
-				<li>Disable cookies in your browser to ensure you are not followed beyond a webpage. Cookies can be blocked specifically, or entirely, from this extension or with similar software such as Privacy Badger</li>
-			</ul>
-		</ul>
-	</ul>
-	<ul>
-		<li><strong>HTTPS</strong>
-			<ul>
-				<li>Ensure the website you are on has a small lock in the URL bar <img src="/img/lock.svg" alt="" width="42" height="42">
-					<ul>
-
-						<li>This ensures a secure tunnel between you and the website, so individuals on your network can not eavesdrop on your activity</li>
-					</ul>
-				</li>
-			</ul>
-		</li>
-	</ul>
-	<ul>
-		<ul>
-			<li>To guarantee that you are browsing securely, use an extension such as <a href="https://www.eff.org/https-everywhere">HTTPS Everywhere</a> to automatically direct you to the secure version of a website.&nbsp;</li>
-		</ul>
-	</ul>
-	<p><br /><br /><br /><br /><br /></p>
-	<ul>
-		<li><strong>Minimize data collection</strong></li>
-	</ul>
-	<ul>
-		<ul>
-			<li>Many platforms allow users to opt-out of personal data collection, however, these settings are often difficult to find and doing so for each platform is not very feasible.&nbsp;</li>
-			<li>Instead, use a service like <a href="https://simpleoptout.com/"><strong>Simple </strong></a><a href="https://simpleoptout.com/"><strong>Opt-Out</strong></a>. It has direct links to opt-out instructions for major platforms such as Facebook, Google, Netflix, Amazon, and more</li><br>
-			<img src="img/facebook.png">
-		</ul>
-	</ul>
-	<p><br /><br /><br /></p>
-	<p><strong>Secure your accounts</strong></p>
-	<p>In the past decade, data breaches and password leaks have struck companies such as Equifax, Facebook, Home Depot, Marriott, Target, Yahoo, and countless others. If you have online accounts, hackers have likely leaked data from at least one of them.&nbsp;</p>
-	<p>To find out if your accounts have been compromised, check your email address on <a href="https://haveibeenpwned.com/">Have I Been Pwned?</a></p>
-	<ul>
-		<li>Use a password manager
-			<ul>
-				<li>Allows storage of multiple complex passwords and syncs across devices</li>
-				<li>Suggests strong passwords</li>
-			</ul>
-		</li>
-	</ul>
-	<ul>
-		<li>Use two-step authentication
-			<ul>
-				<li>Ensures only you can access your account, even if your log-in is compromised</li>
-				<li>Be notified immediately at attempts to log in</li>
-			</ul>
-		</li>
-	</ul>
-      <div style="height: 150px"></div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="data_switch_button">Data Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="cookie_switch_button">Cookie Manager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="demographics_button">Demographic Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="guides_button" disabled><b>Guides</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="about_button">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-  </div>
-</div>
 
-	
+
+    <div class="container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <h1 class="font-weight-light">Data Protection Best Practices Guide</h1>
+                <p>By adjusting a few simple settings on your devices and accounts, you can maintain security against outside parties&rsquo;, limit unwanted attempts to access your data, and ensure consent is not given to provide information to others.&nbsp;</p>
+                <p>
+                    <hr><br /></p>
+                <p><strong>Secure your browsing</strong></p>
+                <p> Companies and websites track everything you do online. Every ad, social network button, and website collects information about your location, browsing habits, and more. This data reveals a lot about you and is valuable to advertisers to
+                    pinpoint who you are as a person as well as your associated habits.</p>
+                <ul>
+                    <li><strong>Block Ads</strong></li>
+                    <ul>
+                        <ul>
+                            <li>Extensions such as <a href="https://adblockplus.org/">Adblock Plus</a> or <a href="https://chrome.google.com/webstore/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm?hl=en">Ublock Origin</a> allow for the blocking of
+                                ads that are both targeted toward you and collecting data about you</li>
+                        </ul>
+                    </ul>
+                </ul>
+                <ul>
+                    <li><strong>Block Cookies</strong></li>
+                </ul>
+                <ul>
+                    <ul>
+                        <ul>
+                            <li>Disable cookies in your browser to ensure you are not followed beyond a webpage. Cookies can be blocked specifically, or entirely, from this extension or with similar software such as Privacy Badger</li>
+                        </ul>
+                    </ul>
+                </ul>
+                <ul>
+                    <li><strong>HTTPS</strong>
+                        <ul>
+                            <li>Ensure the website you are on has a small lock in the URL bar <img src="/img/lock.svg" alt="" width="42" height="42">
+                                <ul>
+
+                                    <li>This ensures a secure tunnel between you and the website, so individuals on your network can not eavesdrop on your activity</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <ul>
+                        <li>To guarantee that you are browsing securely, use an extension such as <a href="https://www.eff.org/https-everywhere">HTTPS Everywhere</a> to automatically direct you to the secure version of a website.&nbsp;</li>
+                    </ul>
+                </ul>
+                <p><br /><br /><br /><br /><br /></p>
+                <ul>
+                    <li><strong>Minimize data collection</strong></li>
+                </ul>
+                <ul>
+                    <ul>
+                        <li>Many platforms allow users to opt-out of personal data collection, however, these settings are often difficult to find and doing so for each platform is not very feasible.&nbsp;</li>
+                        <li>Instead, use a service like <a href="https://simpleoptout.com/"><strong>Simple </strong></a><a href="https://simpleoptout.com/"><strong>Opt-Out</strong></a>. It has direct links to opt-out instructions for major platforms such
+                            as Facebook, Google, Netflix, Amazon, and more</li><br>
+                        <img src="img/facebook.png">
+                    </ul>
+                </ul>
+                <p><br /><br /><br /></p>
+                <p><strong>Secure your accounts</strong></p>
+                <p>In the past decade, data breaches and password leaks have struck companies such as Equifax, Facebook, Home Depot, Marriott, Target, Yahoo, and countless others. If you have online accounts, hackers have likely leaked data from at least
+                    one of them.&nbsp;</p>
+                <p>To find out if your accounts have been compromised, check your email address on <a href="https://haveibeenpwned.com/">Have I Been Pwned?</a></p>
+                <ul>
+                    <li>Use a password manager
+                        <ul>
+                            <li>Allows storage of multiple complex passwords and syncs across devices</li>
+                            <li>Suggests strong passwords</li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li>Use two-step authentication
+                        <ul>
+                            <li>Ensures only you can access your account, even if your log-in is compromised</li>
+                            <li>Be notified immediately at attempts to log in</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div style="height: 150px"></div>
+            </div>
+        </div>
+    </div>
+
+
 
 </body>
+
 </html>
