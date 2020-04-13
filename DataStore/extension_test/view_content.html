@@ -1,0 +1,50 @@
+<!--
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+    view_content.html
+    JS: view_content.js
+    CSS: view_content.css
+
+    HTML page for view content external view
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>View Data</title>
+    <script src="view_content.js"></script>
+    <link rel="stylesheet" href="all_style.css">
+    <link rel="stylesheet" href="view_content.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container" id="data_container">
+        <div class="card border-0 shadow my-5">
+            <div class="card-body p-5">
+                <h1 id='maintitle' class="font-weight-light" style="text-align: center;">View and Edit Collected Data</h1>
+                <hr>
+
+                <div id='dataView'>
+                    <button id='save_edited' style="text-align: center">Save Edited Content</button><br><br>
+                    <div id='display_view'>
+                        <span id='display_title'></span>
+                    </div>
+                    <div id='htmlcontent'>
+                        <pre id='view_content' contenteditable="true"></pre>
+                    </div>
+                </div>
+                <div style="height: 50px"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

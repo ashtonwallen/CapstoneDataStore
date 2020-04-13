@@ -268,10 +268,10 @@ function getMetaData() {
 function postStoredData() {
     downloadFile();
 
-    //go to listing site once live ----------------------------------------------
-    // chrome.tabs.create({
-    //     url: chrome.runtime.getURL("../DataStorePlatform/new_listing.html"),
-    // });
+    
+    chrome.tabs.create({
+        url: "http://datastoreproject.com/new_listing.html"
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

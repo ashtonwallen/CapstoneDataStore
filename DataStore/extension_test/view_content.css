@@ -1,0 +1,25 @@
+/* 
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+	cookie_manager.css
+    Defines css styles for sliders across application
+    Any adjustments to sliders makes them invisible, hence why they are slightly offset
+    Adapted and inspired by: https://www.w3schools.com/howto/howto_css_switch.asp
+*/
+
+#save_edited {
+    margin-top: 1px;
+    margin-right: 2px;
+    top: 0;
+    right: 0;
+}
+
+#htmlcontent {
+    box-shadow: inset 1px 1px 3px 4px rgba(0, 0, 0, 0.3);
+    width: inherit;
+    height: 1000px;
+    overflow: scroll;
+}

@@ -1,0 +1,58 @@
+<!--
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+    popup.html
+    JS: popup.js
+    CSS: popup.css
+
+    HTML page for extension popup
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DataStore</title>
+    <script src="popup.js"></script>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="sliders.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <span id='popup_title'>DataStore</span>
+
+    <div id='quick_settings'>
+        <button id='goto_options_page'>Options</button>
+
+    </div>
+
+
+    <div id="popup_switches">
+        <span id="tracker_popup">Data Tracking
+    <label class="switch">
+      <input type='checkbox' id='data_popup_toggle' class='quicktoggle'>
+      <span class="slider round"></span>
+        </label>
+        </span>
+        <hr>
+        <span id="cookies_popup">Block Cookies
+    <label class="switch">
+      <input type='checkbox' id='cookies_popup_toggle' class='quicktoggle'>
+      <span class="slider round"></span>
+        </label>
+        </span>
+        <hr>
+    </div>
+
+    <div id='popup_datarecords'>
+        <span id='popup_record_text'></span>
+    </div>
+
+</body>
+
+</html>

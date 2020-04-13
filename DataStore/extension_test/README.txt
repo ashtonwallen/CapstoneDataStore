@@ -1,0 +1,1 @@
+This directory is a clone of the extension itself with try/catches around main functionality in order to test

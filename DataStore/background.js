@@ -1,4 +1,24 @@
-//data
+/**
+DataStore Capstone Project
+
+Author: Ashton Allen
+Email: aashton482@gmail.com
+
+background.js
+
+Main driver for the extension.
+Gets passed session data, stores in collected_data object 
+along with other approved tracked data.
+
+Queries for things like bookmarks, topsites, location
+
+Keeps an active copy of user settings to adjust mid-session 
+Saves and retreives settings
+
+**/
+
+
+//Data is global so content scripts can pass data
 window.blocked_all = false;
 window.blocked_cookies = [];
 window.blocked_domains = [];
