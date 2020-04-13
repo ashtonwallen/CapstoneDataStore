@@ -1,0 +1,27 @@
+/* 
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+	all_styles.css
+    Defines overall css styles for extension pages
+*/
+
+html {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+body {
+    background: url('img/background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+hr {
+    border: .5px solid black;
+}

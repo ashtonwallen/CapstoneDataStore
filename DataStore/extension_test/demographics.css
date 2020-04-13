@@ -1,0 +1,42 @@
+/* 
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+	demographics.css
+    Defines css styles for demographics page
+*/
+
+.question_input {
+    display: flex;
+    margin-top: 5px;
+}
+
+.question_div {
+    margin: 0 auto;
+    width: 50%;
+    padding: 10px;
+}
+
+#demo_div {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.nav-item {
+    cursor: pointer;
+}
+
+#buttons {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    text-align: center;
+}

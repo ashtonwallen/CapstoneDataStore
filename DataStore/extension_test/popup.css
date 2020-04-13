@@ -1,0 +1,59 @@
+/* 
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+	popup.css
+    Defines css styles for popup
+*/
+
+.quickToggle {
+    right: 0px;
+}
+
+body {
+    height: 350px;
+    width: 250px;
+    border: 1px solid black;
+}
+
+#popup_switches {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: auto;
+    padding-left: 10px;
+}
+
+#tracker_popup {
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+    float: center;
+}
+
+#cookies_popup {
+    position: relative;
+    display: inline-block;
+    float: center;
+}
+
+#quick_settings {
+    vertical-align: top;
+    float: right;
+}
+
+#popup_datarecords {
+    text-align: center;
+}
+
+html {
+    font-family: Verdana, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+#popup_title {
+    font-size: 26px;
+}

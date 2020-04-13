@@ -1,16 +1,17 @@
-//alert('Grrr.')
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-//   const re = new RegExp('bear', 'gi')
-//   const matches = document.documentElement.innerHTML.match(re)
-//   sendResponse({count: matches.length})
-// })
+/**
+DataStore Capstone Project
 
-//to get inner html
-//const matches = document.documentElement.innerHTML || []
+Author: Ashton Allen
+Email: aashton482@gmail.com
+
+content.js
+
+Grabs data from window and passes to background for processing
+**/
 
 //THIS IS WHERE I SENT DATA FROM PAGE TO BACKGROUND SCRIPT
 
 chrome.runtime.sendMessage({
-  url: window.location.href,
-  html: document.documentElement.innerHTML || []
+    url: window.location.href,
+    html: document.documentElement.innerHTML || []
 })

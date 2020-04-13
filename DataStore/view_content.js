@@ -1,3 +1,15 @@
+/**
+DataStore Capstone Project
+
+Author: Ashton Allen
+Email: aashton482 @gmail.com
+
+view_content.js
+
+Allows user to look at collected data more in depth in an external view
+
+**/
+
 const background = chrome.extension.getBackgroundPage();
 
 chrome.runtime.onMessage.addListener(

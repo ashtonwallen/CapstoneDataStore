@@ -1,3 +1,14 @@
+ /**
+          DataStore Capstone Project
+
+          Author: Ashton Allen
+          Email: aashton482 @gmail.com
+
+          navbar.js
+
+         functionality for navbar in main extension
+ **/
+
  document.addEventListener('DOMContentLoaded', function() {
      switchToCookie = select_element('cookie_switch_button');
      switchToDemographics = select_element('demographics_button');

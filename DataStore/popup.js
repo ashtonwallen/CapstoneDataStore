@@ -1,3 +1,15 @@
+  /**
+        DataStore Capstone Project
+
+        Author: Ashton Allen
+        Email: aashton482 @gmail.com
+
+        popup.js
+
+        Main functionality for extension popup window
+        Allows viewing of number collected records and quick settings toggles
+      **/
+
   const background = chrome.extension.getBackgroundPage();
 
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {

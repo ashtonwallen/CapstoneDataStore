@@ -1,3 +1,16 @@
+/**
+DataStore Capstone Project
+
+Author: Ashton Allen
+Email: aashton482@gmail.com
+
+demographics.js
+
+Allows user to fill out and save demographic information
+Email is required for platform usage
+
+**/
+
 var background = chrome.extension.getBackgroundPage();
 
 function select(id) {

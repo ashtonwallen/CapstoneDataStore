@@ -1,0 +1,50 @@
+/* 
+	DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+	cookie_manager.css
+    Defines css styles for cookie manager
+*/
+
+#block_some_text {
+    margin-left: 15px;
+}
+
+#cookies {
+    display: inline-block;
+}
+
+#cookie_manager {
+    position: relative;
+    text-align: center;
+    margin-top: 20px;
+    max-height: inherit;
+    max-width: inherit;
+    overflow: auto;
+    table-layout: fixed;
+}
+
+.nav-item {
+    cursor: pointer;
+}
+
+.cookie_row {
+    border-bottom: 1px solid black;
+    max-height: inherit;
+    max-width: inherit;
+}
+
+.cookie_subrow {
+    border: 1px solid gray
+}
+
+.btn {
+    margin: 5px;
+    right: 0px;
+}
+
+h1 {
+    text-align: center;
+}
