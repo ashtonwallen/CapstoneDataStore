@@ -1,3 +1,13 @@
+/*
+    DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+    new_listing.js
+    New listing script, allows user to upload data that has been collected
+*/
+
 const parsed = jsonText => JSON.parse(jsonText);
 const fr = new FileReader();
 var fileInput = select('fileinput');
@@ -16,7 +26,7 @@ firebase.initializeApp(config);
 var database = firebase.database();
 ref = database.ref("/listings")
 
-
+//write info to screen
 function writeInfo(data) {
     var data_div = select('meta_info');
     var demo_div = select('demo_info');
@@ -43,6 +53,7 @@ function writeInfo(data) {
     });
 };
 
+//display more specific data
 function displayData(data, div) {
     Object.keys(data).forEach(function(key) {
         if (data[key] == '' || !data[key] || data[key] == 'NA')
@@ -60,10 +71,12 @@ function displayData(data, div) {
     });
 }
 
+// handle a file upload
 function handleFileSelect(evt) {
     fr.readAsText(evt.target.files[0])
 };
 
+// when we get a file, parse and write to screen
 fr.onload = e => {
     try {
         writeInfo(parsed(e.target.result));
@@ -72,6 +85,7 @@ fr.onload = e => {
     }
 };
 
+// write to firebase
 function writeUserData(id, json) {
     firebase.database().ref('listings/' + id).set({
         'meta': json.header.metaData,
@@ -81,6 +95,7 @@ function writeUserData(id, json) {
     window.location.href = "index.html";
 }
 
+// generate unique ID for database listing
 function generateId() {
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -91,6 +106,7 @@ function generateId() {
     return uuid;
 }
 
+//general selector
 function select(id) {
     return document.getElementById(id);
 }

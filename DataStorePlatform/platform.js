@@ -1,3 +1,14 @@
+/*
+    DataStore Capstone Project
+   
+    Author: Ashton Allen
+    Email: aashton482@gmail.com
+
+    platform.js
+    Script for running the main page, grabs data from firebase and displays it
+*/
+
+//init firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAJywW-CmK5QH5lIcOoHSBNJrTkSDbQmRc",
     authDomain: "datastore-3d399.firebaseapp.com",
@@ -17,6 +28,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     getListingData();
 });
 
+// get listing data from firebase and display
 function getListingData() {
     var ref = firebase.database().ref();
 
