@@ -9,7 +9,7 @@ content.js
 Grabs data from window and passes to background for processing
 **/
 
-//THIS IS WHERE I SENT DATA FROM PAGE TO BACKGROUND SCRIPT
+//This is where new dynamic, page relate datapoints can be collected and sent to our background script
 
 chrome.runtime.sendMessage({
     url: window.location.href,

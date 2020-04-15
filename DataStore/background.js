@@ -17,8 +17,6 @@ Saves and retreives settings
 
 **/
 
-
-//Data is global so content scripts can pass data
 window.blocked_all = false;
 window.blocked_cookies = [];
 window.blocked_domains = [];
@@ -27,8 +25,9 @@ window.demographics = {};
 window.track_none = true;
 window.collected_data;
 window.temp_data = {};
-var last_position = "";
+last_position = "";
 
+//Listener for content script, creates session for each new datapoint
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.url) {
         if (!window.track_none) {
@@ -47,7 +46,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 })
 
-//cookies
+//Listener to perform cookie operations per user settings
 chrome.cookies.onChanged.addListener(function(info) {
     if (blocked_all)
         removeCookie(info.cookie);
@@ -60,6 +59,7 @@ chrome.cookies.onChanged.addListener(function(info) {
     }
 });
 
+//Reset all datapoints
 function setDatapoints() {
     window.trackable_datapoints = {
         'Urls': false,
@@ -71,6 +71,7 @@ function setDatapoints() {
     }
 }
 
+//Reset all saved data
 function clearSavedData() {
     window.collected_data = {
         'session': [],
@@ -80,11 +81,13 @@ function clearSavedData() {
     }
 }
 
+//Filters list for only unique values
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-//GET FIRST TIME DATA 
+
+// Get first time data, a user has enabled a setting on data that is not dynamically generated. So we go get it
 function getFirstTimeData() {
     if (window.trackable_datapoints['Bookmarks']) {
         res = bookMarkAsync();
@@ -111,6 +114,7 @@ const bookMarkAsync = async function() {
     return result;
 }
 
+// Used to flatten and store bookmark tree once it is returned
 function flattenResult(tree) {
     var result = [],
         path = [],
@@ -143,7 +147,7 @@ function flattenResult(tree) {
     return result;
 }
 
-//downloads
+// Handles every time a user downloads something new, download info gets added to collected data
 chrome.downloads.onChanged.addListener(handleDownload);
 
 function handleDownload(downloadDelta) {
@@ -165,16 +169,20 @@ const topSitePromise = new Promise((resolve, reject) => {
     });
 })
 
+// Once async completes, return our value
 topSitePromise.then(function(sites) {
     window.collected_data['top-sites'] = sites;
     return sites;
 })
 
+
+// Async function to get topsites
 const topSiteAsync = async function() {
     const result = await topSitePromise;
     return result;
 }
 
+// Save new user settings to Google Account
 function saveUserSettings() {
     var key = 'userSettings'
     var prefs = "";
@@ -197,6 +205,7 @@ function saveUserSettings() {
 
 }
 
+// Retreive stored user settings and set up
 function retreiveSettings(callback) {
     chrome.storage.sync.get('userSettings', function(result) {
         if (result['userSetting'] != null) {
@@ -220,6 +229,7 @@ function retreiveSettings(callback) {
     });
 }
 
+// Returns url from content script 
 function getUrl(requestUrl) {
     if (window.trackable_datapoints['Urls'])
         return requestUrl;
@@ -227,7 +237,7 @@ function getUrl(requestUrl) {
         return 'URL not provided';
 }
 
-
+// Gets html data from content script if user is collecting
 function getHtmlData(request) {
 
     if (window.trackable_datapoints['Html Data'])
@@ -237,7 +247,7 @@ function getHtmlData(request) {
 }
 
 
-
+//Browser API call to get geolocation
 function getLocation() {
     var id;
     if (window.trackable_datapoints['Location Data']) {
@@ -248,6 +258,7 @@ function getLocation() {
     }
 }
 
+// Callback to collect geolocation data
 function savePosition(position) {
     last_position = position.coords.latitude + ', ' + position.coords.longitude;
 }
@@ -256,6 +267,9 @@ function getDateTime() {
     return new Date().toLocaleString().replace(",", "").replace(/:.. /, " ");
 }
 
+
+// Remove cookie if it is detected in page and actively being blocked
+// Needs to be in background so this can be done anywhere across the web
 function removeCookie(cookie) {
     var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
         cookie.path;
@@ -266,7 +280,7 @@ function removeCookie(cookie) {
 }
 
 
-
+// Grab the user demographics when needed
 function getDemographics(callback) {
     console.log('called')
     chrome.storage.local.get('userDemographics', function(result) {
@@ -275,7 +289,7 @@ function getDemographics(callback) {
         }
     });
 }
-
+// Create a unique ID to differentiate sessions
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
 function generateId() {
     var dt = new Date().getTime();

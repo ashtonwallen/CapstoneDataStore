@@ -1,11 +1,13 @@
 var background = chrome.extension.getBackgroundPage();
 
+//Save Settings
 function saveOptions() {
     background.saveUserSettings();
     background.getFirstTimeData();
     location.reload();
 }
 
+//Set toggles to default
 function resetSettings() {
     var answer = window.confirm("Reset tracker settings?")
     if (answer) {
@@ -15,6 +17,7 @@ function resetSettings() {
     }
 }
 
+//Get number of collected records from user
 function getNumRecords() {
     var recCollected = 0;
     if (background.collected_data) {
@@ -30,7 +33,8 @@ function getNumRecords() {
     }
 }
 
-
+//Absolutely horrendous function
+//Sets up and maintains datapoint trackers
 function setUpTrackers(div_url, tracked_data) {
     numRecords = getNumRecords();
     record_div = document.createElement('span');
@@ -114,7 +118,7 @@ function setUpTrackers(div_url, tracked_data) {
 
 }
 
-
+//Toggle all one way or another
 function toggleAll(checked) {
     if (checked) {
         var elms = document.querySelectorAll('.options_checkbox');
@@ -131,6 +135,7 @@ function toggleAll(checked) {
     }
 }
 
+//Check if everything is disabled
 function allFalse() {
     var retval = true;
     Object.keys(background.trackable_datapoints).forEach(function(key) {
@@ -141,7 +146,7 @@ function allFalse() {
     return retval;
 }
 
-
+//Acquires clears store data and offers to reset setting
 function clearStoredData() {
     var answer = window.confirm("Clear stored data and reset tracker settings?")
     if (answer) {
@@ -152,6 +157,7 @@ function clearStoredData() {
 
 }
 
+//Sets up metaview window
 function setupMetaView(datapoint) {
     const data_info = document.createElement('p');
     data_info.textContent = datapoint;
@@ -159,6 +165,7 @@ function setupMetaView(datapoint) {
     return data_info;
 }
 
+//Expand collected datapoint into metaview window
 function expandData() {
     var parent = select('expanded_data');
     var table_id = 'dataview_table';
@@ -205,7 +212,7 @@ function expandData() {
     parent.appendChild(table);
 }
 
-
+//Create external view to view and alter data
 function createExternalView(key, data) {
     background.temp_data = {};
     background.temp_data[key] = data;
@@ -214,12 +221,12 @@ function createExternalView(key, data) {
     });
 }
 
-//generate listing id and append to file extennsion for firebase listings
-function downloadFile() { //can do zip file if needed
+//Download file and redirect to platform
+function downloadFile() { 
     var fileName = 'data.json';
     var content = getUserContent();
 
-    if (content.header.metaData == [] || content.header.userDemographics['Email Address'] == '')
+    if (content.header.metaData == [] || content.header.userDemographics['Email Address'] == '' || !content.header.userDemographics['Email Address'])
         alert("Please ensure you have collected personal data or provided an email address in the user demographics section")
     else {
         console.log()
@@ -234,9 +241,15 @@ function downloadFile() { //can do zip file if needed
             url: url,
             filename: fileName
         })
+
+
+    chrome.tabs.create({
+        url: "http://datastoreproject.com/new_listing.html"
+    });
     }
 }
 
+//Acquires user collected data for post listing
 function getUserContent() {
     var retVal = {};
 
@@ -252,6 +265,7 @@ function getUserContent() {
     return retVal;
 }
 
+//Acquires user metadata for post listing
 function getMetaData() {
     retVal = {};
     var filtered = Object.keys(background.trackable_datapoints).reduce(function(filtered, key) {
@@ -263,15 +277,6 @@ function getMetaData() {
     retVal['userDemographics'] = background.demographics;
 
     return retVal;
-}
-
-function postStoredData() {
-    downloadFile();
-
-    
-    chrome.tabs.create({
-        url: "http://datastoreproject.com/new_listing.html"
-    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -286,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     select('save_datamanager').onclick = saveOptions;
     select('reset_datamanager').onclick = resetSettings;
     select('clear_tracked').onclick = clearStoredData;
-    select('post_button').onclick = postStoredData;
+    select('post_button').onclick = downloadFile;
 
 }, false)
 

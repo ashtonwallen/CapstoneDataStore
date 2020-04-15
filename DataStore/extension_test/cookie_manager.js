@@ -324,12 +324,6 @@ function reloadCookieTable() {
     }); // end domains foreach
 }
 
-
-function logArray(arr) {
-    console.log("Size: " + arr.length)
-    arr.forEach(elem => console.log("LOGARRAY: " + elem));
-}
-
 function expandSection(row) {
     domain = row.id.slice(3)
     cookies = cache.getCookies(domain)

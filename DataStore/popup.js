@@ -1,14 +1,14 @@
   /**
-        DataStore Capstone Project
+            DataStore Capstone Project
 
-        Author: Ashton Allen
-        Email: aashton482 @gmail.com
+            Author: Ashton Allen
+            Email: aashton482 @gmail.com
 
-        popup.js
+            popup.js
 
-        Main functionality for extension popup window
-        Allows viewing of number collected records and quick settings toggles
-      **/
+            Main functionality for extension popup window
+            Allows viewing of number collected records and quick settings toggles
+          **/
 
   const background = chrome.extension.getBackgroundPage();
 
@@ -31,8 +31,6 @@
       dataToggle.checked = !background.track_none
       cookieToggle.checked = background.blocked_all
 
-      //retreive settings and set accordingly
-      //wire up toggles to background script
       dataToggle.onclick = (function() {
           if (!dataToggle.checked)
               background.track_none = true;
@@ -76,6 +74,7 @@
 
   });
 
+  //saves user overall settings
   function saveSwitches() {
       var key = 'userSettings'
       var key2 = 'userSettingsData'

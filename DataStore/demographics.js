@@ -13,6 +13,7 @@ Email is required for platform usage
 
 var background = chrome.extension.getBackgroundPage();
 
+//simple selector
 function select(id) {
     return document.getElementById(id);
 }
@@ -25,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
+// Allows user to save demo answers assuming they have entered an email in the correct format
 function saveAnswers() {
     var date_reg = /^[0-9]{2}[\/][0-9]{2}[\/][0-9]{4}$/g;
     var email_reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -41,7 +42,7 @@ function saveAnswers() {
 
 }
 
-
+// Retreives previously stored demo info
 function retreiveSettings(callback) {
     chrome.storage.local.get('userDemographics', function(result) {
 
@@ -55,6 +56,7 @@ function retreiveSettings(callback) {
     });
 }
 
+// Stores input demographic info
 function storeSettings() {
     var key = 'userDemographics'
     var json = {};
@@ -76,6 +78,7 @@ function storeSettings() {
     background.getDemographics();
 }
 
+//Resets stored demographic info
 function resetDemo() {
     var answer = window.confirm("Clear stored demographic information?")
     if (answer) {

@@ -1,13 +1,13 @@
  /**
-          DataStore Capstone Project
+            DataStore Capstone Project
 
-          Author: Ashton Allen
-          Email: aashton482 @gmail.com
+            Author: Ashton Allen
+            Email: aashton482 @gmail.com
 
-          navbar.js
+            navbar.js
 
-         functionality for navbar in main extension
- **/
+           functionality for navbar in main extension
+   **/
 
  document.addEventListener('DOMContentLoaded', function() {
      switchToCookie = select_element('cookie_switch_button');
@@ -37,6 +37,7 @@
      });
  });
 
+ //bring the user to the nav item they clicked
  function switchWindow(dest) {
      chrome.tabs.query({
          currentWindow: true,
