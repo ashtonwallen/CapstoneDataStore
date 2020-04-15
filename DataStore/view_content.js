@@ -12,15 +12,6 @@ Allows user to look at collected data more in depth in an external view
 
 const background = chrome.extension.getBackgroundPage();
 
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        console.log(sender.tab ?
-            "from a content script:" + sender.tab.url :
-            "from the extension");
-        if (request.greeting == "hello")
-            sendResponse({ farewell: "goodbye" });
-    });
-
 document.addEventListener('DOMContentLoaded', function() {
     var display = document.getElementById('display_view');
     var content = document.getElementById('view_content');

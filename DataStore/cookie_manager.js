@@ -14,19 +14,16 @@ The cookie table is still very similar to the Chromium Author's
 
 **/
 
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 const background = chrome.extension.getBackgroundPage();
 expanded_domains = []
 
+// store user cookie settings by calling background's save settings 
 function storeSettings() {
     background.saveUserSettings();
     location.reload();
 }
 
-
+//retreive stored cookie settings 
 function retreiveSettings(callback) {
     background.retreiveSettings();
 
@@ -37,6 +34,7 @@ function retreiveSettings(callback) {
     }
 }
 
+//clear stored settings
 function clearSettings() {
     background.blocked_cookies = [];
     background.blocked_domains = [];
@@ -45,7 +43,7 @@ function clearSettings() {
     storeSettings();
 }
 
-// simple Timer class
+//timer for automating table updates
 function Timer() {
     this.start_ = new Date();
 
@@ -58,8 +56,7 @@ function Timer() {
     }
 }
 
-// Compares cookies for "key" (name, domain, etc.) equality, but not "value"
-// equality.
+//match every value of a cookie to ensure it is the same as one we are looking for
 function cookieMatch(c1, c2) {
     return (c1.name == c2.name) && (c1.domain == c2.domain) &&
         (c1.hostOnly == c2.hostOnly) && (c1.path == c2.path) &&
@@ -67,7 +64,7 @@ function cookieMatch(c1, c2) {
         (c1.session == c2.session) && (c1.storeId == c2.storeId);
 }
 
-// Returns an array of sorted keys from an associative array.
+//Sorts keys
 function sortedKeys(array) {
     var keys = [];
     for (var i in array) {
@@ -77,13 +74,12 @@ function sortedKeys(array) {
     return keys;
 }
 
-// Shorthand for document.querySelector.
+//selector to simplify grabbing elements
 function select(selector) {
     return document.querySelector(selector);
 }
 
-// An object used for caching data about the browser's cookies, which we update
-// as notifications come in.
+//Maintains the list of active cookies for display -- largely inspired by Chromium's Cookies Example
 function CookieCache() {
     this.cookies_ = {};
 
@@ -116,8 +112,7 @@ function CookieCache() {
         }
     };
 
-    // Returns a sorted list of cookie domains that match |filter|. If |filter| is
-    //  null, returns all domains.
+
     this.getDomains = function(filter) {
         var result = [];
         sortedKeys(this.cookies_).forEach(function(domain) {
@@ -136,7 +131,7 @@ function CookieCache() {
 
 var cache = new CookieCache();
 
-
+//Remove/block all cookies in filter -- DEPRECATED
 function removeAllForFilter() {
     var filter = select("#filter").value;
     var timer = new Timer();
@@ -145,6 +140,7 @@ function removeAllForFilter() {
     });
 }
 
+//Remove all active cookies from browser -- DEPRECATED
 function removeAll() {
     var all_cookies = [];
     cache.getDomains().forEach(function(domain) {
@@ -167,6 +163,7 @@ function removeAll() {
     });
 }
 
+// Remove a specific cookie
 function removeCookie(cookie) {
     var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
         cookie.path;
@@ -177,6 +174,7 @@ function removeCookie(cookie) {
     cache.remove(cookie)
 }
 
+// Remove all cookies within domain
 function removeCookiesForDomain(domain) {
     if (cache.getCookies(domain))
         cache.getCookies(domain).forEach(function(cookie) {
@@ -185,6 +183,7 @@ function removeCookiesForDomain(domain) {
 
 }
 
+// Remove any cookie that has been previously blocked if it tries to show up again
 function removeCookiesBlocked() {
     cache.getDomains().forEach(function(domain) {
         cache.getCookies(domain).forEach(function(cookie) {
@@ -199,6 +198,7 @@ function removeCookiesBlocked() {
     });
 }
 
+//Resets table
 function resetTable() {
     var table = select("#cookies");
     while (table.rows.length > 1) {
@@ -207,7 +207,7 @@ function resetTable() {
 }
 
 var reload_scheduled = false;
-
+//automatically reloads cookie table
 function scheduleReloadCookieTable() {
     if (!reload_scheduled) {
         reload_scheduled = true;
@@ -215,11 +215,12 @@ function scheduleReloadCookieTable() {
     }
 }
 
+//gets only unique values in list
 function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-
+//reloads cookie table with updated cookie info
 function reloadCookieTable() {
     reload_scheduled = false;
 
@@ -283,15 +284,10 @@ function reloadCookieTable() {
         if (expanded_domains.indexOf(domain) != -1) {
             expandSection(row);
         }
-    }); // end domains foreach
+    });
 }
 
-
-function logArray(arr) {
-    console.log("Size: " + arr.length)
-    arr.forEach(elem => console.log("LOGARRAY: " + elem));
-}
-
+// Expand a domain to reveal its cookies
 function expandSection(row) {
     domain = row.id.slice(3)
     cookies = cache.getCookies(domain)
@@ -336,10 +332,12 @@ function expandSection(row) {
 
 }
 
+
 function focusFilter() {
     select("#filter").focus();
 }
 
+//Reset filter
 function resetFilter() {
     var filter = select("#filter");
     filter.focus();
@@ -356,29 +354,34 @@ window.onkeydown = function(event) {
     }
 }
 
+//sets up listener
 function startListening() {
     chrome.cookies.onChanged.addListener(listener);
 }
 
+//stops listener
 function stopListening() {
     chrome.cookies.onChanged.removeListener(listener);
     chrome.cookies.onChanged.removeListener(block_all_listener);
     chrome.cookies.onChanged.removeListener(block_specific_listener);
 }
-
+//sets up listener
 function continuousDeleteAll() {
     chrome.cookies.onChanged.addListener(block_all_listener);
 }
 
+// continuously block cookies pr domains that have been blocked by user
 function continuousDeleteList() {
     chrome.cookies.onChanged.addListener(block_specific_listener);
 }
 
+// block everything that comes in
 function block_all_listener(info) {
     removeCookie(info.cookie);
     reloadCookieTable();
 }
 
+//simple listener, no action required only collect cookies
 function listener(info) {
     cache.remove(info.cookie);
     if (!info.removed) {
@@ -387,7 +390,7 @@ function listener(info) {
     scheduleReloadCookieTable();
 }
 
-//still need to remove specific domains
+// Blocks cookies from entering browser if theyve been blocked by user
 function block_specific_listener(info) {
     background.blocked_cookies.forEach(function(cookie) {
         if (cookieMatch(cookie, info.cookie)) {
@@ -403,6 +406,7 @@ function block_specific_listener(info) {
     scheduleReloadCookieTable();
 }
 
+// Sets up block alll/block specific checkboxes and creates listeners accordingly
 function setupCheckboxes(checkbox_all, checkbox_some) {
     if (checkbox_all && checkbox_some) {
         checkbox_all.addEventListener('change', function() {
@@ -435,6 +439,7 @@ function setupCheckboxes(checkbox_all, checkbox_some) {
     }
 }
 
+// Gets settings and sets up page/cookie cache
 function onload() {
     retreiveSettings();
     focusFilter();
