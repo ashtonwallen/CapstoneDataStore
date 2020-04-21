@@ -65,7 +65,7 @@ function setUpTrackers(div_url, tracked_data) {
         datapoint_toggle.setAttribute('type', 'checkbox');
         datapoint_toggle.setAttribute('id', datapoint + '_id');
         datapoint_toggle.setAttribute('class', 'options_checkbox form-control');
-        console.log(datapoint_toggle)
+
 
         datapoint_toggle.onclick = (function() {
             background.trackable_datapoints[datapoint] = !background.trackable_datapoints[datapoint];
@@ -222,7 +222,7 @@ function createExternalView(key, data) {
 }
 
 //Download file and redirect to platform
-function downloadFile() { 
+function downloadFile() {
     var fileName = 'data.json';
     var content = getUserContent();
 
@@ -243,9 +243,9 @@ function downloadFile() {
         })
 
 
-    chrome.tabs.create({
-        url: "http://datastoreproject.com/new_listing.html"
-    });
+        chrome.tabs.create({
+            url: "http://datastoreproject.com/new_listing.html"
+        });
     }
 }
 

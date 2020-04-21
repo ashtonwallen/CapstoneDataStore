@@ -44,35 +44,39 @@ function getListingData() {
             data = obj[data];
             demo = data.demo;
             meta = data.meta;
+            size = data.size;
+
+            row = document.createElement('div');
+            row.setAttribute('class', 'row');
+
+            card = document.createElement('div');
+            card.setAttribute('class', 'card');
 
 
-            row = document.createElement('div')
-            row.setAttribute('class', 'row')
-
-            card = document.createElement('div')
-            card.setAttribute('class', 'card')
+            card2 = document.createElement('div');
+            card2.setAttribute('class', 'card');
 
 
-            card2 = document.createElement('div')
-            card2.setAttribute('class', 'card')
-
-
-            p = document.createElement('p')
-            p.innerHTML += '<b>Demographics</b><hr>'
-            p.innerHTML += "<a href=\"mailto:" + demo['Email Address'] + "\">" + demo['Email Address'] + "</a><br>"
+            p = document.createElement('p');
+            p.innerHTML += '<b>Demographics</b><hr>';
+            p.innerHTML += "<a href=\"mailto:" + demo['Email Address'] + "\">" + demo['Email Address'] + "</a><br>";
             Object.keys(demo).forEach(function(key) {
                 if (key != 'Email Address')
-                    p.innerHTML += key + ': ' + demo[key] + '<br>'
+                    p.innerHTML += key + ': ' + demo[key] + '<br>';
             })
 
-            p2 = document.createElement('p')
-            p2.innerHTML += '<b>Metadata</b><hr>'
+            p2 = document.createElement('p');
+            p2.innerHTML += '<b>Metadata</b><hr>';
 
+            size_p = document.createElement('p');
+            size_p.innerHTML = "<b>" + size + " bytes" + "</b>";
 
-            Object.keys(meta).forEach(key => p2.innerHTML += '' + meta[key] + '<br>')
+            Object.keys(meta).forEach(key => p2.innerHTML += '' + meta[key] + '<br>');
 
-            card.appendChild(p)
-            card2.appendChild(p2)
+            card.appendChild(p);
+            card2.appendChild(size_p);
+            card2.appendChild(p2);
+
 
             row.appendChild(card);
             row.appendChild(card2);

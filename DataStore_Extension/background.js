@@ -282,7 +282,6 @@ function removeCookie(cookie) {
 
 // Grab the user demographics when needed
 function getDemographics(callback) {
-    console.log('called')
     chrome.storage.local.get('userDemographics', function(result) {
         if (result['userDemographics']) {
             window.demographics = JSON.parse(result['userDemographics'])

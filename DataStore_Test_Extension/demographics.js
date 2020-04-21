@@ -13,6 +13,14 @@ Email is required for platform usage
 
 var background = chrome.extension.getBackgroundPage();
 
+
+function CustomException(message) {
+    const error = new Error(message);
+    return error;
+}
+
+CustomException.prototype = Object.create(Error.prototype);
+
 function select(id) {
     return document.getElementById(id);
 }
@@ -33,7 +41,7 @@ function saveAnswers() {
     if (email_reg.test(select('Email Address').value)) {
         storeSettings();
         background.getDemographics();
-        location.reload();
+       // location.reload(); commented out to keep output
     } else {
         alert('Please enter valid email address')
     }
@@ -43,37 +51,43 @@ function saveAnswers() {
 
 
 function retreiveSettings(callback) {
-    chrome.storage.local.get('userDemographics', function(result) {
+        chrome.storage.local.get('userDemographics', function(result) {
+            try {
+            result = JSON.parse(result['userDemographics']);
 
-        result = JSON.parse(result['userDemographics'])
-
-        var elms = document.querySelectorAll('.question_input');
-        elms.forEach(function(elem) {
-            if (result[elem.id])
-                elem.value = result[elem.id]
+            var elms = document.querySelectorAll('.question_input');
+            elms.forEach(function(elem) {
+                if (result[elem.id])
+                    elem.value = result[elem.id];
+            })
+            console.log("Retreive settings passed")
+        } catch (e) {console.log("Retreive settings failed -- ignore if this is first time setup")}
         })
-    });
 }
 
 function storeSettings() {
-    var key = 'userDemographics'
-    var json = {};
-    var questionsWithAnswers = {}
+    try {
+        var key = 'userDemographics'
+        var json = {};
+        var questionsWithAnswers = {}
 
-    var elms = document.querySelectorAll('.question_input');
-    elms.forEach(function(elem) {
-        questionsWithAnswers[elem.id] = elem.value
-    })
+        var elms = document.querySelectorAll('.question_input');
+        elms.forEach(function(elem) {
+            questionsWithAnswers[elem.id] = elem.value
+        })
 
-    var prefs = JSON.stringify(questionsWithAnswers);
+        var prefs = JSON.stringify(questionsWithAnswers);
 
-    json[key] = prefs;
+        json[key] = prefs;
 
-    chrome.storage.local.set(json, function() {
-        console.log('Saved Demo', key, prefs);
-    });
 
-    background.getDemographics();
+        chrome.storage.local.set(json, function() {
+            console.log('StoreDemographic Settings Passed')
+        });
+
+        background.getDemographics();
+    }
+    catch (e) {console.log("Store Demographic Settings Failed: " + e)}
 }
 
 function resetDemo() {
