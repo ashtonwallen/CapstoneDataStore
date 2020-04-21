@@ -46,13 +46,19 @@ function saveAnswers() {
 function retreiveSettings(callback) {
     chrome.storage.local.get('userDemographics', function(result) {
 
-        result = JSON.parse(result['userDemographics'])
+       
 
-        var elms = document.querySelectorAll('.question_input');
-        elms.forEach(function(elem) {
-            if (result[elem.id])
-                elem.value = result[elem.id]
-        })
+        try {
+            result = JSON.parse(result['userDemographics'])
+
+
+
+            var elms = document.querySelectorAll('.question_input');
+            elms.forEach(function(elem) {
+                if (result[elem.id])
+                    elem.value = result[elem.id]
+            })
+        } catch (e) {} //user has no stored data
     });
 }
 

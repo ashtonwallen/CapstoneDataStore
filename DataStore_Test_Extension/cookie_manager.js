@@ -212,10 +212,11 @@ function removeCookiesForDomain(domain) {
         if (cache.getCookies(domain))
             cache.getCookies(domain).forEach(function(cookie) {
                 removeCookie(cookie);
-            });
-
-        if (cache.getCookies(domain))
+        if (!cache.getCookies(domain))
             throw new CustomException("Domain cookies not removed")
+        });
+
+       
     } catch (e) { console.log("removeCookiesForDomain() failed: " + e) }
 
 }

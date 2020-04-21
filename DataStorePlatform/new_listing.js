@@ -49,7 +49,7 @@ function writeInfo(data) {
     var uploadButton = select('upload_button');
 
     uploadButton.addEventListener("click", function() {
-        writeUserData(generateId(), data);
+        writeUserData(generateId(), data, fileInput.files[0].size.toString());
     });
 };
 
@@ -86,10 +86,11 @@ fr.onload = e => {
 };
 
 // write to firebase
-function writeUserData(id, json) {
+function writeUserData(id, json, size) {
     firebase.database().ref('listings/' + id).set({
         'meta': json.header.metaData,
-        'demo': json.header.userDemographics
+        'demo': json.header.userDemographics,
+        'size': size
     });
 
     window.location.href = "index.html";
