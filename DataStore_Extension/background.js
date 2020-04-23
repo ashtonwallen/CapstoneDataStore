@@ -288,6 +288,7 @@ function getDemographics(callback) {
         }
     });
 }
+
 // Create a unique ID to differentiate sessions
 // https://www.w3resource.com/javascript-exercises/javascript-math-exercise-23.php
 function generateId() {
